@@ -1,5 +1,5 @@
-Node v14.17
+# Plasma Remix
 
-https://projects.thibautfoussard.com/plasma/
+Forked from [a private repository](https://gitlab.com/thibka-2021/20210906_plasma) by [thibka](https://gitlab.com/thibka).  
 
-![Preview](readme-preview.jpg)
+Original project at https://projects.thibautfoussard.com/plasma/

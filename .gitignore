@@ -1,4 +1,5 @@
 node_modules/*
-dist/*
+_/*
 .DS_Store
 Thumbs.db
+package-lock.json
