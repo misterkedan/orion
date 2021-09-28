@@ -1,0 +1,45 @@
+{
+  "name": "webpack_threejs_postprocessing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "webpack serve",
+    "dev": "webpack serve",
+    "build": "webpack --mode=production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.14.4",
+    "autoprefixer": "^10.2.6",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "css-loader": "^5.2.7",
+    "dart-sass": "^1.25.0",
+    "eslint": "^7.12.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.2",
+    "json-loader": "^0.5.7",
+    "mini-css-extract-plugin": "^2.1.0",
+    "postcss-loader": "^6.1.1",
+    "raw-loader": "^4.0.2",
+    "sass": "^1.29.0",
+    "sass-loader": "^12.1.0",
+    "webpack": "^5.44.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "@thibka/three-multiloader": "^2.4.4",
+    "copy-webpack-plugin": "^9.0.0",
+    "gsap": "^3.7.0",
+    "normalize.css": "^8.0.1",
+    "postprocessing": "^6.22.1",
+    "three": "^0.130.1",
+    "three-rotation-controls": "^1.0.1"
+  }
+}
