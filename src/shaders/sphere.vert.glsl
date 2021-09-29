@@ -86,12 +86,12 @@ float cnoise(vec3 P){
 void main()
 {
     vec3 pos = position;
-    float timeSpeed = 0.1;
+    float timeSpeed = 0.05;
     float loopLength = uDuration * timeSpeed;
 
-    float factor1 = 10.0;
+    float factor1 = 8.0;
     float factor2 = 5.0;
-    float factor = mix ( factor1, factor2, uMix ) * 1.5;
+    float factor = mix ( factor1, factor2, sin( uTime ) * timeSpeed );
 
     // Circular noise loop
     /* vec3 circle = vec3(
@@ -114,17 +114,19 @@ void main()
     v1 = cnoise( vec3(v1) );
     v1 = cnoise( vec3(v1) );
     //v1 = cnoise( vec3(v1) );
+    //v1 = cnoise( vec3(v1) );
 
     float v2 = cnoise(pos + time - loopLength);
     v2 = cnoise( vec3(v2) );
     v2 = cnoise( vec3(v2) );
     v2 = cnoise( vec3(v2) );
     //v2 = cnoise( vec3(v2) );
+    //v2 = cnoise( vec3(v2) );
 
     float transitionProgress = (time-transitionStart)/(loopLength-transitionStart);
     float progress = clamp(transitionProgress, 0.0, 1.0);
 
-    float noise = mix(v1, v2, progress);
+    float noise = mix(v1, v2, progress) * 1.0;
     pos += noise / factor;
 
     // No loop

@@ -21,8 +21,6 @@ class Sphere extends Mesh {
 
 		super( geometry, material );
 
-		this.rotation.z = 90 * Math.PI / 2;
-
 	}
 
 	update( time ) {
