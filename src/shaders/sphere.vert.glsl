@@ -1,8 +1,10 @@
 #define PI acos(-1.0)
 
+uniform vec3 uDisplacement;
+uniform int uPasses;
+uniform float uSmoothness;
+uniform float uSpeed;
 uniform float uTime;
-uniform float uDuration;
-uniform float uMix;
 
 varying vec4 vPosition;
 varying float vDistance;
@@ -86,55 +88,34 @@ float cnoise(vec3 P){
 void main()
 {
     vec3 pos = position;
-    float timeSpeed = 0.05;
-    float loopLength = uDuration * timeSpeed;
 
-    float factor1 = 8.0;
-    float factor2 = 5.0;
-    float factor = mix ( factor1, factor2, sin( uTime ) * timeSpeed );
+    float speed = 0.01 * uSpeed;
+    float loopLength = 10.0 * speed;
 
-    // Circular noise loop
-    /* vec3 circle = vec3(
-      cos(uTime * timeSpeed * PI * 2.0 / loopLength) * 0.5, 
-      uv.x, 
-      sin(uTime * timeSpeed * PI * 2.0 / loopLength) * 0.5 );
-
-    float noise;
-    noise = cnoise( pos + circle );
-    noise = cnoise( vec3(noise) );
-    noise = cnoise( vec3(noise) );
-    pos += noise / factor; */
+    float factor1 = uSmoothness;
+    float factor2 = uSmoothness * 0.75;
+    float factor = mix ( factor1, factor2, sin( uTime ) );
 
     // Lerp-based noise loop
     float transitionStart = loopLength * 0.5;
-    float time = mod(uTime * timeSpeed, loopLength);
+    float time = mod(uTime * speed, loopLength);
 
     float v1 = cnoise(pos + time);
-    v1 = cnoise( vec3(v1) );
-    v1 = cnoise( vec3(v1) );
-    v1 = cnoise( vec3(v1) );
-    //v1 = cnoise( vec3(v1) );
-    //v1 = cnoise( vec3(v1) );
-
     float v2 = cnoise(pos + time - loopLength);
-    v2 = cnoise( vec3(v2) );
-    v2 = cnoise( vec3(v2) );
-    v2 = cnoise( vec3(v2) );
-    //v2 = cnoise( vec3(v2) );
-    //v2 = cnoise( vec3(v2) );
+
+	for ( int i = 0; i < uPasses; i ++ ) {
+		v1 = cnoise( vec3(v1) );
+		v2 = cnoise( vec3(v2) );
+	}
 
     float transitionProgress = (time-transitionStart)/(loopLength-transitionStart);
     float progress = clamp(transitionProgress, 0.0, 1.0);
 
-    float noise = mix(v1, v2, progress) * 1.0;
-    pos += noise / factor;
+    float noise = mix(v1, v2, progress) / factor;
 
-    // No loop
-    /* float noise;
-    noise = cnoise( pos + uTime * timeSpeed );
-    noise = cnoise( vec3(noise) );
-    noise = cnoise( vec3(noise) );
-    pos += noise / 15.0; */
+	vec3 displacement = uDisplacement * noise;
+
+    pos += displacement;
 
     gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0);
 
