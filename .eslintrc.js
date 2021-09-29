@@ -1,7 +1,7 @@
 module.exports = {
 	'env': {
 		'browser': true,
-		'es2020': true
+		'es2021': true
 	},
 	'extends': [
 		'eslint:recommended',
@@ -10,9 +10,13 @@ module.exports = {
 	'ignorePatterns': [
 		'lib/*', 'vendor/*', '*.min.js', '_/*'
 	],
+	'parser': '@babel/eslint-parser',
 	'parserOptions': {
 		'ecmaVersion': 12,
 		'sourceType': 'module',
+		'babelOptions': {
+			'configFile': './.babelrc.json'
+		}
 	},
 	'rules': {
 		'indent': 'warn',

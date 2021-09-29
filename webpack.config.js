@@ -3,7 +3,7 @@ const path = require( 'path' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 
 let config = {
-	entry: './src/index.js',
+	entry: './src/main.js',
 	output: {
 		filename: 'main.min.js',
 		path: path.resolve( __dirname, 'dist' ),
@@ -15,7 +15,15 @@ let config = {
 				exclude: [ /node_modules/ ],
 				loader: 'babel-loader',
 				options: {
-					presets: [ '@babel/preset-env' ]
+					presets: [
+						[
+							'@babel/preset-env',
+							{
+								useBuiltIns: 'usage',
+								corejs: 2
+							}
+						]
+					],
 				}
 			},
 			{
@@ -31,6 +39,12 @@ let config = {
 		'dat.gui': 'dat.gui',
 		three: 'THREE'
 	},
+	resolve: {
+		alias: {
+			alien: path.resolve( __dirname, './src/alien/' ),
+			shaders: path.resolve( __dirname, './src/shaders/' ),
+		}
+	}
 };
 
 module.exports = ( env, argv ) => {
@@ -38,7 +52,6 @@ module.exports = ( env, argv ) => {
 	if ( argv.mode === 'development' ) return {
 		...config,
 		mode: 'development',
-		//devtool: 'inline-source-map',
 		devServer: {
 			static: {
 				directory: path.resolve( __dirname, 'dist' ),

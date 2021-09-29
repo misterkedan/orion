@@ -3,3 +3,4 @@ _/*
 .DS_Store
 Thumbs.db
 package-lock.json
+src/config.js
