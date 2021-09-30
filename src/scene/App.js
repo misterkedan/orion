@@ -83,7 +83,7 @@ class App {
 		SceneController.update();
 		RenderManager.update( time, delta, frame );
 
-		SceneController.view.sphere.update( time );
+		this.view.sphere.update( time );
 
 	};
 

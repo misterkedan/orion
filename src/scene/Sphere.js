@@ -1,4 +1,4 @@
-import { Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three';
+import { Mesh, ShaderMaterial, SphereGeometry } from 'three';
 import vShader from 'shaders/sphere.vert.glsl';
 import fShader from 'shaders/sphere.frag.glsl';
 import { config } from '../config';
@@ -13,11 +13,6 @@ class Sphere extends Mesh {
 			vertexShader: vShader,
 			fragmentShader: fShader,
 			uniforms: {
-				uDisplacement: { value: new Vector3(
-					config.displacement.x,
-					config.displacement.y,
-					config.displacement.z,
-				) },
 				uPasses: { value: config.passes },
 				uSmoothness: { value: config.smoothness },
 				uSpeed: { value: config.speed },
@@ -29,24 +24,31 @@ class Sphere extends Mesh {
 
 		super( geometry, material );
 
+		this.rotationSpeed = { ...config.rotation };
+
 	}
 
 	update( time ) {
 
-		this.time = time;
+		let { rotation, rotationSpeed } = this;
 
 		const FACTOR = 0.01;
-		this.rotation.x = time * config.rotation.x * FACTOR;
-		this.rotation.y = time * config.rotation.y * FACTOR;
-		this.rotation.z = time * config.rotation.z * FACTOR;
+
+		rotation.x = time * rotationSpeed.x * FACTOR;
+		rotation.y = time * rotationSpeed.y * FACTOR;
+		rotation.z = time * rotationSpeed.z * FACTOR;
+
+		this.time = time;
 
 	}
 
 	invert() {
 
-		const tmp = this.value1;
-		this.value1 = this.value2;
-		this.value2 = tmp;
+		let { value1, value2 } = this;
+		const tmp = value1;
+
+		value1 = value2;
+		value2 = tmp;
 
 	}
 
@@ -55,42 +57,6 @@ class Sphere extends Mesh {
 		GUI Getters/Setters
 
 	/-------------------------------------------------------------------------*/
-
-	get displacementX() {
-
-		return this.material.uniforms.uDisplacement.value.x;
-
-	}
-
-	set displacementX( value ) {
-
-		this.material.uniforms.uDisplacement.value.x = value;
-
-	}
-
-	get displacementY() {
-
-		return this.material.uniforms.uDisplacement.value.y;
-
-	}
-
-	set displacementY( value ) {
-
-		this.material.uniforms.uDisplacement.value.y = value;
-
-	}
-
-	get displacementZ() {
-
-		return this.material.uniforms.uDisplacement.value.z;
-
-	}
-
-	set displacementZ( value ) {
-
-		this.material.uniforms.uDisplacement.value.z = value;
-
-	}
 
 	get passes() {
 

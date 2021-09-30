@@ -1,17 +1,13 @@
 #define PI acos(-1.0)
 
-uniform vec3 uDisplacement;
 uniform int uPasses;
 uniform float uSmoothness;
 uniform float uSpeed;
 uniform float uTime;
-
 varying vec4 vPosition;
 varying float vDistance;
 
-//	Classic Perlin 3D Noise 
-//	by Stefan Gustavson
-//
+// Classic Perlin 3D Noise, by Stefan Gustavson
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
 vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
@@ -83,10 +79,10 @@ float cnoise(vec3 P){
   float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
   return 2.2 * n_xyz;
 }
+// 
 
-// vertex shader
-void main()
-{
+void main() {
+
     vec3 pos = position;
 
     float speed = 0.01 * uSpeed;
@@ -94,7 +90,7 @@ void main()
 
     float factor1 = uSmoothness;
     float factor2 = uSmoothness * 0.8;
-    float factor = mix ( factor1, factor2, sin( uTime ) );
+    float factor = mix(factor1, factor2, sin( uTime ));
 
     // Lerp-based noise loop
     float transitionStart = loopLength * 0.5;
@@ -113,12 +109,11 @@ void main()
 
     float noise = mix(v1, v2, progress) / factor;
 
-	vec3 displacement = uDisplacement * noise;
-
-    pos += displacement;
+    pos += noise;
 
     gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0);
 
     vPosition = modelMatrix * vec4(pos, 1.0);
     vDistance = distance(pos, vec3(0.0));
+
 }

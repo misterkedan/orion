@@ -1,7 +1,6 @@
 import { Group } from 'three';
 import { Floor } from './Floor';
 import { Sphere } from './Sphere';
-//import { Triangle } from './Triangle';
 
 class SceneView extends Group {
 
@@ -24,9 +23,6 @@ class SceneView extends Group {
 		this.sphere = new Sphere();
 		this.add( this.sphere );
 
-		//this.triangle = new Triangle();
-		//this.add( this.triangle );
-
 	}
 
 	/**
@@ -41,7 +37,6 @@ class SceneView extends Group {
 
 	ready = () => Promise.all( [
 		this.floor.initMesh(),
-		//this.triangle.initMesh()
 	] );
 
 }
