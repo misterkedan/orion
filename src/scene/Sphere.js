@@ -7,24 +7,28 @@ class Sphere extends Mesh {
 
 	constructor() {
 
+		const {
+			passes, smoothness, speed, value1, value2, rotationSpeed
+		} = config.sphere;
+
 		const geometry = new SphereGeometry( 1, 320, 320 );
 
 		const material = new ShaderMaterial( {
 			vertexShader: vShader,
 			fragmentShader: fShader,
 			uniforms: {
-				uPasses: { value: config.passes },
-				uSmoothness: { value: config.smoothness },
-				uSpeed: { value: config.speed },
+				uPasses: { value: passes },
+				uSmoothness: { value: smoothness },
+				uSpeed: { value: speed },
 				uTime: { value: 0 },
-				uValue1: { value: config.value1 },
-				uValue2: { value: config.value2 },
+				uValue1: { value: value1 },
+				uValue2: { value: value2 },
 			},
 		} );
 
 		super( geometry, material );
 
-		this.rotationSpeed = { ...config.rotation };
+		this.rotationSpeed = { ...rotationSpeed };
 
 	}
 

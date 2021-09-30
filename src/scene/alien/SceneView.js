@@ -1,6 +1,6 @@
 import { Group } from 'three';
 import { Floor } from './Floor';
-import { Sphere } from './Sphere';
+import { Sphere } from '../Sphere';
 
 class SceneView extends Group {
 

@@ -7,7 +7,7 @@ import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import { TextureLoader } from 'alien/loaders/world/TextureLoader';
 import { getFullscreenTriangle } from 'alien/utils/world/Utils3D';
 
-import { config } from '../config';
+import { config } from 'root/config';
 
 class WorldController {
 

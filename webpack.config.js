@@ -41,7 +41,9 @@ let config = {
 	},
 	resolve: {
 		alias: {
+			root: path.resolve( __dirname, './src/' ),
 			alien: path.resolve( __dirname, './src/alien/' ),
+			keda: path.resolve( __dirname, './src/keda/' ),
 			shaders: path.resolve( __dirname, './src/shaders/' ),
 		}
 	}
