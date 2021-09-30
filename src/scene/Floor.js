@@ -45,7 +45,7 @@ class Floor extends Group {
 		material.uniforms.uMatrix = this.reflector.textureMatrixUniform;
 
 		const mesh = new Mesh( geometry, material );
-		mesh.position.y = - 1.8;
+		mesh.position.y = - 1.75;
 		mesh.rotation.x = - Math.PI / 2;
 		mesh.add( this.reflector );
 

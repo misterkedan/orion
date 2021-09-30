@@ -12,6 +12,13 @@ import { mix } from 'alien/utils/Utils';
 import { CompositeMaterial } from './CompositeMaterial';
 import { WorldController } from './WorldController';
 
+import { config } from '../config';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { AdjustmentsPass } from '../keda/AdjustmentsPass';
+import { GaussianBlurPass } from '../keda/GaussianBlurPass';
+import { CustomVignettePass } from './CustomVignettePass';
+
 const BlurDirectionX = new Vector2( 1, 0 );
 const BlurDirectionY = new Vector2( 0, 1 );
 
@@ -23,12 +30,36 @@ class RenderManager {
 		this.scene = scene;
 		this.camera = camera;
 
-		this.luminosityThreshold = 0.1;
-		this.bloomStrength = 0.3;
-		this.bloomRadius = 0.75;
+		//this.luminosityThreshold = 0.1;
+		//this.bloomStrength = 0.3;
+		//this.bloomRadius = 0.75;
+		Object.assign( this, config.bloom );
 		this.enabled = true;
 
 		this.initRenderer();
+
+		this.initComposer();
+
+	}
+
+	static initComposer() {
+
+		const post = {
+			render: new RenderPass( this.screenScene, this.screenCamera ),
+			//blur: new GaussianBlurPass( {
+			//	size: 16,
+			//	quality: 4,
+			//	//intensity: 0,
+			//	resolution: WorldController.resolution,
+			//} ),
+			gradient: new CustomVignettePass(),
+			adjustments: new AdjustmentsPass( { saturation: 1.5 } ),
+		};
+
+		const composer = new EffectComposer( this.renderer );
+
+		Object.values( post ).forEach( pass => composer.addPass( pass ) );
+		Object.assign( this, { post, composer } );
 
 	}
 
@@ -118,6 +149,7 @@ class RenderManager {
 
 		this.renderer.setPixelRatio( dpr );
 		this.renderer.setSize( width, height );
+		this.composer.setSize( width, height );
 
 		width = Math.round( width * dpr );
 		height = Math.round( height * dpr );
@@ -215,6 +247,8 @@ class RenderManager {
 		this.screen.material = this.compositeMaterial;
 		renderer.setRenderTarget( null );
 		renderer.render( screenScene, screenCamera );
+
+		this.composer.render();
 
 	};
 

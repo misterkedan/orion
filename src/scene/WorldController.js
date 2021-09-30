@@ -40,7 +40,8 @@ class WorldController {
 		this.camera = new PerspectiveCamera( 30 );
 		this.camera.near = 0.5;
 		this.camera.far = 50;
-		//this.camera.position.z = 0;
+		this.camera.position.z = 10;
+		this.camera.zoom = 1.1;
 		this.camera.lookAt( this.scene.position );
 
 		// Global geometries

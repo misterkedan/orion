@@ -93,7 +93,7 @@ void main()
     float loopLength = 10.0 * speed;
 
     float factor1 = uSmoothness;
-    float factor2 = uSmoothness * 0.75;
+    float factor2 = uSmoothness * 0.8;
     float factor = mix ( factor1, factor2, sin( uTime ) );
 
     // Lerp-based noise loop

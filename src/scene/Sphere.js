@@ -7,7 +7,7 @@ class Sphere extends Mesh {
 
 	constructor() {
 
-		const geometry = new SphereGeometry( 1, 256, 256 );
+		const geometry = new SphereGeometry( 1, 320, 320 );
 
 		const material = new ShaderMaterial( {
 			vertexShader: vShader,
