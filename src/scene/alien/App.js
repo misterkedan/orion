@@ -9,6 +9,9 @@ import { SceneView } from './SceneView';
 import { SceneController } from './SceneController';
 import { CameraController } from './CameraController';
 
+import { settings } from 'root/settings';
+import { gui } from 'root/gui';
+
 class App {
 
 	static async init() {
@@ -27,6 +30,10 @@ class App {
 
 		CameraController.animateIn();
 		SceneController.animateIn();
+
+		settings.sphere = this.view.sphere;
+		gui.init();
+		settings.init();
 
 	}
 
