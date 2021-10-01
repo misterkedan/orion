@@ -1,6 +1,6 @@
 import { Group } from 'three';
 import { Floor } from './Floor';
-import { Sphere } from '../Sphere';
+import { Orb } from '../Orb';
 
 class SceneView extends Group {
 
@@ -20,11 +20,11 @@ class SceneView extends Group {
 		this.add( this.floor );
 		this.floor.position.y = 0.4;
 
-		this.sphere = new Sphere();
-		this.add( this.sphere );
+		this.orb = new Orb();
+		this.add( this.orb );
 
 		if ( window.innerWidth < window.innerHeight )
-			this.sphere.position.z = 2;
+			this.orb.position.z = 2;
 
 	}
 

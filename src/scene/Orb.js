@@ -1,15 +1,15 @@
 import { Mesh, ShaderMaterial, SphereGeometry } from 'three';
-import vShader from 'shaders/sphere.vert.glsl';
-import fShader from 'shaders/sphere.frag.glsl';
-import { config } from '../config';
+import vShader from 'shaders/orb.vert.glsl';
+import fShader from 'shaders/orb.frag.glsl';
+import { config } from 'root/config';
 
-class Sphere extends Mesh {
+class Orb extends Mesh {
 
 	constructor() {
 
 		const {
 			passes, smoothness, speed, value1, value2, rotationSpeed
-		} = config.sphere;
+		} = config.orb;
 
 		const geometry = new SphereGeometry( 1, 320, 320 );
 
@@ -136,4 +136,4 @@ class Sphere extends Mesh {
 
 }
 
-export { Sphere };
+export { Orb };

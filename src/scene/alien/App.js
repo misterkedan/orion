@@ -32,7 +32,7 @@ class App {
 		CameraController.animateIn();
 		SceneController.animateIn();
 
-		settings.sphere = this.view.sphere;
+		settings.orb = this.view.orb;
 		gui.init();
 		settings.init();
 		controls.init();
@@ -92,8 +92,8 @@ class App {
 		SceneController.update();
 		RenderManager.update( time, delta, frame );
 
-		const { sphere } =  this.view;
-		sphere.update( time );
+		const { orb } =  this.view;
+		orb.update( time );
 
 		const { camera } = WorldController;
 		const { style } = document.body;

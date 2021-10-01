@@ -15,7 +15,7 @@ function copy( object ) {
 
 const settings = {
 
-	sphere: null,
+	orb: null,
 
 	defaults: copy( config ),
 	current: copy( config ),
@@ -33,7 +33,7 @@ const settings = {
 			hue: { min: 0, max: 2 * Math.PI },
 			saturation: { min: 0, max: 3 },
 		},
-		sphere: {
+		orb: {
 			passes: { min: 2, max: 4, round: true },
 			speed: { min: 1, max: RANDOM_CAP, round: true },
 			smoothness: { min: 5, max: 10, round: true },
@@ -90,15 +90,15 @@ const settings = {
 
 		} );
 
-		Object.entries( randomize.sphere ).forEach( ( [ key, value ] ) =>
-			setRandomValue( current.sphere, key, value )
+		Object.entries( randomize.orb ).forEach( ( [ key, value ] ) =>
+			setRandomValue( current.orb, key, value )
 		);
 
 		Object.entries( randomize.rotationSpeed ).forEach( ( [ key, value ] ) => {
 
 			if ( vesuna.random() > 0.66 )
-				setRandomValue( current.sphere.rotationSpeed, key, value );
-			else current.sphere.rotationSpeed[ key ] = 0;
+				setRandomValue( current.orb.rotationSpeed, key, value );
+			else current.orb.rotationSpeed[ key ] = 0;
 
 		} );
 
@@ -118,7 +118,7 @@ const settings = {
 
 	update:() => {
 
-		const { current, sphere } = settings;
+		const { current, orb } = settings;
 
 		Object.entries( current.adjustments ).forEach( ( [ key, value ] ) => {
 
@@ -126,15 +126,15 @@ const settings = {
 
 		} );
 
-		Object.entries( current.sphere ).forEach( ( [ key, value ] ) => {
+		Object.entries( current.orb ).forEach( ( [ key, value ] ) => {
 
-			if ( key !== 'rotationSpeed' ) sphere[ key ] = value;
+			if ( key !== 'rotationSpeed' ) orb[ key ] = value;
 
 		} );
 
-		Object.entries( current.sphere.rotationSpeed ).forEach( ( [ key, value ] ) => {
+		Object.entries( current.orb.rotationSpeed ).forEach( ( [ key, value ] ) => {
 
-			sphere.rotationSpeed[ key ] = value;
+			orb.rotationSpeed[ key ] = value;
 
 		} );
 
@@ -146,7 +146,7 @@ const settings = {
 
 		const hash = winlo.hash;
 
-		const TITLE = 'Plasma Remix';
+		const TITLE = 'Orion';
 		document.title = ( hash ) ? `${TITLE} #${hash}` : TITLE;
 
 		if ( hash ) settings.random( hash );
@@ -168,7 +168,7 @@ const settings = {
 
 	save: ()=> {
 
-		const { current, base, sphere } = settings;
+		const { current, base, orb } = settings;
 
 		Object.keys( current.adjustments ).forEach( key => {
 
@@ -176,17 +176,17 @@ const settings = {
 
 		} );
 
-		Object.keys( current.sphere ).forEach( key => {
+		Object.keys( current.orb ).forEach( key => {
 
 			if ( key === 'rotationSpeed' ) return;
-			current.sphere[ key ] = sphere[ key ];
+			current.orb[ key ] = orb[ key ];
 
 		} );
 
-		Object.keys( current.sphere.rotationSpeed ).forEach( key => {
+		Object.keys( current.orb.rotationSpeed ).forEach( key => {
 
 
-			current.sphere.rotationSpeed[ key ] = sphere.rotationSpeed[ key ];
+			current.orb.rotationSpeed[ key ] = orb.rotationSpeed[ key ];
 
 		} );
 
