@@ -4,20 +4,22 @@ import winlo from 'winlo';
 import { RenderManager } from './scene/alien/RenderManager';
 import { config } from './config';
 import { gui } from './gui';
-import { utils } from './utils';
 
 const RANDOM_CAP = 30;
 
-//vesuna.mode = vesuna.modes.GIBBERISH;
-//vesuna.verbose = true;
+function copy( object ) {
+
+	return JSON.parse( JSON.stringify( object ) );
+
+}
 
 const settings = {
 
 	sphere: null,
 
-	defaults: utils.copy( config ),
-	current: utils.copy( config ),
-	base: utils.copy( config ),
+	defaults: copy( config ),
+	current: copy( config ),
+	base: copy( config ),
 
 	init: () => {
 
@@ -45,17 +47,22 @@ const settings = {
 		},
 	},
 
-	reset: () => {
+	reset: ( hardReset = true ) => {
 
-		window.location.hash = '';
-		winlo.clear();
+		if ( hardReset ) {
+
+			winlo.clear();
+			winlo.hash = '#/';
+
+		}
 
 		let { defaults, update, save } = settings;
-		settings.current = utils.copy( defaults );
-		settings.base = utils.copy( defaults );
 
+		settings.current = copy( defaults );
+		settings.base = copy( defaults );
 		update();
-		save();
+
+		if ( hardReset ) save();
 
 	},
 
@@ -95,10 +102,9 @@ const settings = {
 
 		} );
 
-		settings.base = utils.copy( settings.current );
+		settings.base = copy( settings.current );
 
 		settings.update();
-
 
 		if ( ! seed ) {
 
@@ -138,14 +144,13 @@ const settings = {
 
 	applyHash: () => {
 
-		let hash = window.location.hash;
+		const hash = winlo.hash;
 
-		if ( hash.length && hash !== `#${winlo.autohash}` ) {
+		const TITLE = 'Plasma Remix';
+		document.title = ( hash ) ? `${TITLE} #${hash}` : TITLE;
 
-			hash = hash.substring( 1 );
-			settings.random( hash );
-
-		}
+		if ( hash ) settings.random( hash );
+		else settings.reset( false );
 
 	},
 
@@ -153,14 +158,9 @@ const settings = {
 
 		const { current, update } = settings;
 
-		//const test = { seed: '' };
-		//winlo.load( test, false );
-		//if ( test.seed.length ) random( test.seed );
-		//winlo.load( current, false );
-
 		settings.applyHash();
 
-		winlo.load( current, false, { hash: 'seed' } );
+		winlo.load( current, 'settings', { hash: 'seed' } );
 
 		update();
 
@@ -190,15 +190,9 @@ const settings = {
 
 		} );
 
-		const currentFlat = utils.flatten( current );
-		const baseFlat = utils.flatten( base );
-		const diff = utils.diff( currentFlat, baseFlat ) || {};
-
-		//if ( ! Object.keys( diff ).length ) diff.d = new Date().now();
-		diff.seed = current.seed;
-
-		//winlo.save( diff, false );
-		winlo.save( diff, false, { hash: 'seed' } );
+		const { seed } = current;
+		if ( seed ) winlo.save( { seed }, false, { hash:'seed' } );
+		winlo.save( current, 'settings', { defaults: base, hash: 'seed' } );
 
 	},
 };

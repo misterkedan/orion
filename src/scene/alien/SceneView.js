@@ -22,6 +22,7 @@ class SceneView extends Group {
 
 		this.sphere = new Sphere();
 		this.add( this.sphere );
+		this.sphere.position.z = 1.3;
 
 	}
 

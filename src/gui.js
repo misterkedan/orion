@@ -26,13 +26,10 @@ gui.init = function () {
 	const color = gui.addFolder( 'Color' );
 	color.add( sphere, 'value1', 0, 1 ).step( 0.01 ).listen();
 	color.add( sphere, 'value2', 0, 1 ).step( 0.01 ).listen();
-	color.add( sphere, 'invert' );
+	//color.add( sphere, 'invert' );
+	color.add( RenderManager.post.adjustments, 'hue', 0, Math.PI * 2 ).step( 0.01 );
+	color.add( RenderManager.post.adjustments, 'saturation', 0, 3 ).step( 0.01 );
 	color.open();
-
-	const post = gui.addFolder( 'Post-processing' );
-	post.add( RenderManager.post.adjustments, 'hue', 0, Math.PI * 2 ).step( 0.01 );
-	post.add( RenderManager.post.adjustments, 'saturation', 0, 3 ).step( 0.01 );
-	post.open();
 
 	const set = gui.addFolder( 'Settings' );
 	set.add( settings, 'reset' );
@@ -41,11 +38,11 @@ gui.init = function () {
 	set.open();
 
 	// Test
-	const pixelRatio = window.devicePixelRatio > 2 ? 2 : 1;
-	const largeWidth = pixelRatio * 640;
-	if ( window.innerWidth < largeWidth ) gui.close();
+	//const pixelRatio = window.devicePixelRatio > 2 ? 2 : 1;
+	//const largeWidth = pixelRatio * 640;
+	//if ( window.innerWidth < largeWidth ) gui.close();
 
-	//gui.close();
+	gui.close();
 
 };
 

@@ -11,6 +11,7 @@ import { CameraController } from './CameraController';
 
 import { settings } from 'root/settings';
 import { gui } from 'root/gui';
+import { controls } from '../../controls';
 
 class App {
 
@@ -34,6 +35,7 @@ class App {
 		settings.sphere = this.view.sphere;
 		gui.init();
 		settings.init();
+		controls.init();
 
 	}
 
@@ -90,7 +92,16 @@ class App {
 		SceneController.update();
 		RenderManager.update( time, delta, frame );
 
-		this.view.sphere.update( time );
+		const { sphere } =  this.view;
+		sphere.update( time );
+
+		const { camera } = WorldController;
+		const { style } = document.body;
+		const { pointer, raycaster } = controls;
+		//camera.updateMatrixWorld();
+		raycaster.setFromCamera( pointer, camera );
+		if ( controls.intersects ) style.cursor = 'pointer';
+		else style.cursor = 'auto';
 
 	};
 

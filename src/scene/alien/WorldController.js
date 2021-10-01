@@ -41,7 +41,7 @@ class WorldController {
 		this.camera.near = 0.5;
 		this.camera.far = 50;
 		this.camera.position.z = 10;
-		this.camera.zoom = 1.1;
+		//this.camera.zoom = 1.1;
 		this.camera.lookAt( this.scene.position );
 
 		// Global geometries
