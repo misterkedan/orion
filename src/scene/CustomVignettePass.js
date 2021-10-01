@@ -13,7 +13,7 @@ const FRAG = /*glsl*/`
 
 	void main() {
 
-		float falloff = 0.1;
+		float falloff = 0.25;
 		float amount = 1.2;
 
 		vec2 uv = vUv;
