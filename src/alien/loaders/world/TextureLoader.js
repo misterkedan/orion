@@ -11,106 +11,150 @@ import { Assets } from '../Assets.js';
 import { Loader } from '../Loader.js';
 
 export class TextureLoader extends Loader {
-    constructor(assets, callback) {
-        super(assets, callback);
 
-        this.defaultOptions = {
-            imageOrientation: 'flipY',
-            premultiplyAlpha: 'none',
-            preserveData: false
-        };
+	constructor( assets, callback ) {
 
-        this.options = this.defaultOptions;
-    }
+		super( assets, callback );
 
-    load(path, callback) {
-        path = Assets.getPath(path);
+		this.defaultOptions = {
+			imageOrientation: 'flipY',
+			premultiplyAlpha: 'none',
+			preserveData: false
+		};
 
-        const cached = Assets.get(path);
+		this.options = this.defaultOptions;
 
-        let texture;
-        let promise;
+	}
 
-        if (cached && cached.isTexture) {
-            texture = cached;
+	load( path, callback ) {
 
-            this.increment();
+		path = Assets.getPath( path );
 
-            if (callback) {
-                callback(texture);
-            }
-        } else {
-            texture = new Texture();
+		const cached = Assets.get( path );
 
-            if (cached) {
-                promise = Promise.resolve(cached);
-            } else if (typeof createImageBitmap !== 'undefined' && !Device.agent.includes('firefox')) {
-                const params = {
-                    imageOrientation: this.options.imageOrientation,
-                    premultiplyAlpha: this.options.premultiplyAlpha
-                };
+		let texture;
+		let promise;
 
-                if (Thread.threads) {
-                    promise = ImageBitmapLoaderThread.load(path, Assets.options, params);
-                } else {
-                    promise = fetch(path, Assets.options).then(response => {
-                        return response.blob();
-                    }).then(blob => {
-                        return createImageBitmap(blob, params);
-                    });
-                }
-            } else {
-                promise = Assets.loadImage(path);
-            }
+		if ( cached && cached.isTexture ) {
 
-            promise.then(image => {
-                if (image.error) {
-                    throw new Error(image.error);
-                }
+			texture = cached;
 
-                texture.image = image;
-                texture.format = /jpe?g/.test(path) ? RGBFormat : RGBAFormat;
-                texture.encoding = sRGBEncoding;
+			this.increment();
 
-                if (!MathUtils.isPowerOfTwo(image.width) || !MathUtils.isPowerOfTwo(image.height)) {
-                    texture.minFilter = LinearFilter;
-                    texture.generateMipmaps = false;
-                }
+			if ( callback ) {
 
-                texture.needsUpdate = true;
+				callback( texture );
 
-                texture.onUpdate = () => {
-                    if (image.close && !this.options.preserveData) {
-                        image.close();
-                    }
+			}
 
-                    texture.onUpdate = null;
-                };
+		} else {
 
-                Assets.add(path, texture);
+			texture = new Texture();
 
-                this.increment();
+			if ( cached ) {
 
-                if (callback) {
-                    callback(texture);
-                }
-            }).catch(event => {
-                this.increment();
+				promise = Promise.resolve( cached );
 
-                if (callback) {
-                    callback(event);
-                }
-            });
-        }
+			} else if ( typeof createImageBitmap !== 'undefined' && ! Device.agent.includes( 'firefox' ) ) {
 
-        this.total++;
+				const params = {
+					imageOrientation: this.options.imageOrientation,
+					premultiplyAlpha: this.options.premultiplyAlpha
+				};
 
-        return texture;
-    }
+				if ( Thread.threads ) {
 
-    setOptions(options) {
-        this.options = Object.assign(this.defaultOptions, options);
+					promise = ImageBitmapLoaderThread.load( path, Assets.options, params );
 
-        return this;
-    }
+				} else {
+
+					promise = fetch( path, Assets.options ).then( response => {
+
+						return response.blob();
+
+					} ).then( blob => {
+
+						return createImageBitmap( blob, params );
+
+					} );
+
+				}
+
+			} else {
+
+				promise = Assets.loadImage( path );
+
+			}
+
+			promise.then( image => {
+
+				if ( image.error ) {
+
+					throw new Error( image.error );
+
+				}
+
+				texture.image = image;
+				texture.format = /jpe?g/.test( path ) ? RGBFormat : RGBAFormat;
+				texture.encoding = sRGBEncoding;
+
+				if ( ! MathUtils.isPowerOfTwo( image.width ) || ! MathUtils.isPowerOfTwo( image.height ) ) {
+
+					texture.minFilter = LinearFilter;
+					texture.generateMipmaps = false;
+
+				}
+
+				texture.needsUpdate = true;
+
+				texture.onUpdate = () => {
+
+					if ( image.close && ! this.options.preserveData ) {
+
+						image.close();
+
+					}
+
+					texture.onUpdate = null;
+
+				};
+
+				Assets.add( path, texture );
+
+				this.increment();
+
+				if ( callback ) {
+
+					callback( texture );
+
+				}
+
+			} ).catch( event => {
+
+				this.increment();
+
+				if ( callback ) {
+
+					callback( event );
+
+				}
+
+			} );
+
+		}
+
+		this.total ++;
+
+		return texture;
+
+	}
+
+	setOptions( options ) {
+
+		this.options = Object.assign( this.defaultOptions, options );
+
+		return this;
+
+	}
+
 }

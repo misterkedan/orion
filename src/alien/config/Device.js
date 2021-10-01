@@ -1,29 +1,35 @@
 export class Device {
-    static agent = navigator.userAgent.toLowerCase();
 
-    static mobile = !!navigator.maxTouchPoints;
+	static agent = navigator.userAgent.toLowerCase();
 
-    static tablet = this.mobile && Math.max(window.innerWidth, window.innerHeight) > 1000;
+	static mobile = !! navigator.maxTouchPoints;
 
-    static phone = this.mobile && !this.tablet;
+	static tablet = this.mobile && Math.max( window.innerWidth, window.innerHeight ) > 1000;
 
-    static webgl = (() => {
-        if (typeof window === 'undefined') {
-            return;
-        }
+	static phone = this.mobile && ! this.tablet;
 
-        const contextOptions = {
-            failIfMajorPerformanceCaveat: true
-        };
+	static webgl = ( () => {
 
-        let canvas = document.createElement('canvas');
-        let gl = canvas.getContext('webgl2', contextOptions);
+		if ( typeof window === 'undefined' ) {
 
-        const result = !!gl;
+			return;
 
-        gl = null;
-        canvas = null;
+		}
 
-        return result;
-    })();
+		const contextOptions = {
+			failIfMajorPerformanceCaveat: true
+		};
+
+		let canvas = document.createElement( 'canvas' );
+		let gl = canvas.getContext( 'webgl2', contextOptions );
+
+		const result = !! gl;
+
+		gl = null;
+		canvas = null;
+
+		return result;
+
+	} )();
+
 }

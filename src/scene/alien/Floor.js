@@ -26,9 +26,7 @@ class Floor extends Group {
 
 		const geometry = new PlaneGeometry( 110, 110 );
 
-		//const map = await loadTexture( 'textures/polished_concrete_bright.jpg' );
 		const map = await loadTexture( 'textures/polished_concrete_basecolor.jpg' );
-		//const map = await loadTexture( 'textures/pitted_metal_basecolor.jpg' );
 		map.wrapS = RepeatWrapping;
 		map.wrapT = RepeatWrapping;
 		map.repeat.set( 16, 16 );

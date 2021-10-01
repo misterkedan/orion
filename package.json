@@ -1,6 +1,6 @@
 {
   "name": "orion",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
@@ -32,5 +32,6 @@
     "vesuna": "^1.0.0",
     "winlo": "^0.5.0"
   },
-  "private": "true"
+  "sideEffects": false,
+  "private": true
 }

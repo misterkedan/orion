@@ -9,119 +9,163 @@ import { Cluster } from './Cluster.js';
 import { absolute, getConstructor, guid } from './Utils.js';
 
 export class Thread extends EventEmitter {
-    static count = navigator.hardwareConcurrency || 4;
-    static params = {};
 
-    static upload(...objects) {
-        if (!this.handlers) {
-            this.handlers = [];
-        }
+	static count = navigator.hardwareConcurrency || 4;
+	static params = {};
 
-        objects.forEach(object => this.handlers.push(object));
-    }
+	static upload( ...objects ) {
 
-    static shared(params) {
-        if (!this.threads) {
-            this.params = params || {};
-            this.params.handlers = this.handlers;
-            this.threads = new Cluster(Thread, this.count);
-        }
+		if ( ! this.handlers ) {
 
-        return !params ? this.threads.get() : this.threads;
-    }
+			this.handlers = [];
 
-    constructor({
-        imports = [],
-        classes = [],
-        controller = [],
-        handlers = []
-    } = Thread.params) {
-        super();
+		}
 
-        const array = [];
+		objects.forEach( object => this.handlers.push( object ) );
 
-        imports.forEach(bundle => {
-            const [path, ...names] = bundle;
+	}
 
-            array.push(`import { ${names.join(', ')} } from '${absolute(Assets.getPath(path))}';`);
-        });
+	static shared( params ) {
 
-        if (classes.length) {
-            array.push(classes.map(object => object.toString()).join('\n\n'));
-        }
+		if ( ! this.threads ) {
 
-        if (controller.length) {
-            const [object, ...handlers] = controller;
-            const { name, code } = getConstructor(object);
+			this.params = params || {};
+			this.params.handlers = this.handlers;
+			this.threads = new Cluster( Thread, this.count );
 
-            array.push(`${code}\n\nnew ${name}();`);
+		}
 
-            handlers.forEach(name => this.createMethod(name));
-        } else {
-            array.push('addEventListener(\'message\', ({ data }) => self[data.message.fn].call(self, data.message));');
-        }
+		return ! params ? this.threads.get() : this.threads;
 
-        handlers.forEach(object => {
-            const { name, code } = getConstructor(object);
+	}
 
-            this.createMethod(name);
+	constructor( {
+		imports = [],
+		classes = [],
+		controller = [],
+		handlers = []
+	} = Thread.params ) {
 
-            array.push(`self.${name}=${code};`);
-        });
+		super();
 
-        this.worker = new Worker(URL.createObjectURL(new Blob([array.join('\n\n')], { type: 'text/javascript' })), { type: 'module' });
+		const array = [];
 
-        this.addListeners();
-    }
+		imports.forEach( bundle => {
 
-    addListeners() {
-        this.worker.addEventListener('message', this.onMessage);
-    }
+			const [ path, ...names ] = bundle;
 
-    removeListeners() {
-        this.worker.removeEventListener('message', this.onMessage);
-    }
+			array.push( `import { ${names.join( ', ' )} } from '${absolute( Assets.getPath( path ) )}';` );
 
-    onMessage = ({ data }) => {
-        if (data.event) {
-            this.emit(data.event, data.message);
-        } else if (data.id) {
-            this.emit(data.id, data.message);
-            this.off(data.id);
-        }
-    };
+		} );
 
-    createMethod(name) {
-        this[name] = (message = {}, callback) => {
-            const promise = new Promise(resolve => this.send(name, message, resolve));
+		if ( classes.length ) {
 
-            if (callback) {
-                promise.then(callback);
-            }
+			array.push( classes.map( object => object.toString() ).join( '\n\n' ) );
 
-            return promise;
-        };
-    }
+		}
 
-    send(name, message = {}, callback) {
-        message.fn = name;
+		if ( controller.length ) {
 
-        if (callback) {
-            const id = guid();
+			const [ object, ...handlers ] = controller;
+			const { name, code } = getConstructor( object );
 
-            message.id = id;
+			array.push( `${code}\n\nnew ${name}();` );
 
-            this.on(id, callback);
-        }
+			handlers.forEach( name => this.createMethod( name ) );
 
-        this.worker.postMessage({ message }, message.buffer);
-    }
+		} else {
 
-    destroy() {
-        this.removeListeners();
+			array.push( 'addEventListener(\'message\', ({ data }) => self[data.message.fn].call(self, data.message));' );
 
-        this.worker.terminate();
+		}
 
-        return super.destroy();
-    }
+		handlers.forEach( object => {
+
+			const { name, code } = getConstructor( object );
+
+			this.createMethod( name );
+
+			array.push( `self.${name}=${code};` );
+
+		} );
+
+		this.worker = new Worker( URL.createObjectURL( new Blob( [ array.join( '\n\n' ) ], { type: 'text/javascript' } ) ), { type: 'module' } );
+
+		this.addListeners();
+
+	}
+
+	addListeners() {
+
+		this.worker.addEventListener( 'message', this.onMessage );
+
+	}
+
+	removeListeners() {
+
+		this.worker.removeEventListener( 'message', this.onMessage );
+
+	}
+
+	onMessage = ( { data } ) => {
+
+		if ( data.event ) {
+
+			this.emit( data.event, data.message );
+
+		} else if ( data.id ) {
+
+			this.emit( data.id, data.message );
+			this.off( data.id );
+
+		}
+
+	};
+
+	createMethod( name ) {
+
+		this[ name ] = ( message = {}, callback ) => {
+
+			const promise = new Promise( resolve => this.send( name, message, resolve ) );
+
+			if ( callback ) {
+
+				promise.then( callback );
+
+			}
+
+			return promise;
+
+		};
+
+	}
+
+	send( name, message = {}, callback ) {
+
+		message.fn = name;
+
+		if ( callback ) {
+
+			const id = guid();
+
+			message.id = id;
+
+			this.on( id, callback );
+
+		}
+
+		this.worker.postMessage( { message }, message.buffer );
+
+	}
+
+	destroy() {
+
+		this.removeListeners();
+
+		this.worker.terminate();
+
+		return super.destroy();
+
+	}
+
 }

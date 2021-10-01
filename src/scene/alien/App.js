@@ -11,7 +11,7 @@ import { CameraController } from './CameraController';
 
 import { settings } from 'root/settings';
 import { gui } from 'root/gui';
-import { controls } from '../../controls';
+import { controls } from 'root/controls';
 
 class App {
 

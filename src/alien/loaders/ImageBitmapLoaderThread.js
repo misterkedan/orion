@@ -8,29 +8,47 @@ import { Assets } from './Assets.js';
 import { absolute } from '../utils/Utils.js';
 
 export class ImageBitmapLoaderThread {
-    static init() {
-        Thread.upload(loadImage);
 
-        function loadImage({ path, options, params, id }) {
-            fetch(path, options).then(response => {
-                return response.blob();
-            }).then(blob => {
-                return createImageBitmap(blob, params);
-            }).then(bitmap => {
-                postMessage({ id, message: bitmap }, [bitmap]);
-            }).catch(error => {
-                if (error instanceof Error) {
-                    error = error.name + ': ' + error.message;
-                }
+	static init() {
 
-                postMessage({ id, message: { error } });
-            });
-        }
-    }
+		Thread.upload( loadImage );
 
-    static load(path, options, params) {
-        path = absolute(Assets.getPath(path));
+		function loadImage( { path, options, params, id } ) {
 
-        return Thread.shared().loadImage({ path, options, params });
-    }
+			fetch( path, options ).then( response => {
+
+				return response.blob();
+
+			} ).then( blob => {
+
+				return createImageBitmap( blob, params );
+
+			} ).then( bitmap => {
+
+				postMessage( { id, message: bitmap }, [ bitmap ] );
+
+			} ).catch( error => {
+
+				if ( error instanceof Error ) {
+
+					error = error.name + ': ' + error.message;
+
+				}
+
+				postMessage( { id, message: { error } } );
+
+			} );
+
+		}
+
+	}
+
+	static load( path, options, params ) {
+
+		path = absolute( Assets.getPath( path ) );
+
+		return Thread.shared().loadImage( { path, options, params } );
+
+	}
+
 }

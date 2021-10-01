@@ -1,4 +1,5 @@
 export class Events {
+
     static STATE_CHANGE = 'state_change';
     static KEY_DOWN = 'key_down';
     static KEY_UP = 'key_up';
@@ -10,4 +11,5 @@ export class Events {
     static UPDATE = 'update';
     static HOVER = 'hover';
     static CLICK = 'click';
+
 }

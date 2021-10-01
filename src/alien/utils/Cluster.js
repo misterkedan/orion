@@ -3,62 +3,92 @@
  */
 
 export class Cluster {
-    constructor(type, num = 10) {
-        this.type = type;
 
-        this.array = [];
-        this.index = 0;
+	constructor( type, num = 10 ) {
 
-        if (type) {
-            for (let i = 0; i < num; i++) {
-                this.array.push(new type());
-            }
-        }
-    }
+		this.type = type;
 
-    get() {
-        const object = this.array[this.index];
+		this.array = [];
+		this.index = 0;
 
-        this.index++;
+		if ( type ) {
 
-        if (this.index === this.array.length) {
-            this.index = 0;
-        }
+			for ( let i = 0; i < num; i ++ ) {
 
-        return object;
-    }
+				this.array.push( new type() );
 
-    empty() {
-        this.array.length = 0;
-    }
+			}
 
-    push(object) {
-        this.array.push(object);
-    }
+		}
 
-    insert(array) {
-        if (!Array.isArray(array)) {
-            array = [array];
-        }
+	}
 
-        this.array.push(...array);
-    }
+	get() {
 
-    length() {
-        return this.array.length;
-    }
+		const object = this.array[ this.index ];
 
-    destroy() {
-        for (let i = this.array.length - 1; i >= 0; i--) {
-            if (this.array[i] && this.array[i].destroy) {
-                this.array[i].destroy();
-            }
-        }
+		this.index ++;
 
-        for (const prop in this) {
-            this[prop] = null;
-        }
+		if ( this.index === this.array.length ) {
 
-        return null;
-    }
+			this.index = 0;
+
+		}
+
+		return object;
+
+	}
+
+	empty() {
+
+		this.array.length = 0;
+
+	}
+
+	push( object ) {
+
+		this.array.push( object );
+
+	}
+
+	insert( array ) {
+
+		if ( ! Array.isArray( array ) ) {
+
+			array = [ array ];
+
+		}
+
+		this.array.push( ...array );
+
+	}
+
+	length() {
+
+		return this.array.length;
+
+	}
+
+	destroy() {
+
+		for ( let i = this.array.length - 1; i >= 0; i -- ) {
+
+			if ( this.array[ i ] && this.array[ i ].destroy ) {
+
+				this.array[ i ].destroy();
+
+			}
+
+		}
+
+		for ( const prop in this ) {
+
+			this[ prop ] = null;
+
+		}
+
+		return null;
+
+	}
+
 }
