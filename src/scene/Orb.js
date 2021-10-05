@@ -1,21 +1,21 @@
 import { Mesh, ShaderMaterial, SphereGeometry } from 'three';
-import vShader from 'shaders/orb.vert.glsl';
-import fShader from 'shaders/orb.frag.glsl';
-import { config } from 'root/config';
+import vertexShader from '../shaders/Orb.vert.glsl';
+import fragmentShader from '../shaders/Orb.frag.glsl';
+import { settings } from '../settings';
 
 class Orb extends Mesh {
 
-	constructor() {
+	constructor( segments ) {
 
 		const {
 			passes, smoothness, speed, value1, value2, rotationSpeed
-		} = config.orb;
+		} = settings.current.orb;
 
-		const geometry = new SphereGeometry( 1, 320, 320 );
+		const geometry = new SphereGeometry( 1, segments, segments );
 
 		const material = new ShaderMaterial( {
-			vertexShader: vShader,
-			fragmentShader: fShader,
+			vertexShader,
+			fragmentShader,
 			uniforms: {
 				uPasses: { value: passes },
 				uSmoothness: { value: smoothness },
@@ -34,10 +34,23 @@ class Orb extends Mesh {
 
 	update( time ) {
 
+		//console.log( { time, delta } );
 		let { rotation, rotationSpeed } = this;
 
-		const FACTOR = 0.01;
+		//if ( delta > 16.67 ) delta = 16.67;
+		//else if ( delta < 1)
 
+		//console.log( delta );
+
+		//const FACTOR = 0.00001;
+		//delta *= FACTOR;
+
+		//rotation.x += delta * rotationSpeed.x;
+		//rotation.y += delta * rotationSpeed.y;
+		//rotation.z += delta * rotationSpeed.z;
+		time /= 1000;
+
+		const FACTOR = 0.01;
 		rotation.x = time * rotationSpeed.x * FACTOR;
 		rotation.y = time * rotationSpeed.y * FACTOR;
 		rotation.z = time * rotationSpeed.z * FACTOR;

@@ -39,14 +39,14 @@ let config = {
 		'dat.gui': 'dat.gui',
 		three: 'THREE'
 	},
-	resolve: {
-		alias: {
-			root: path.resolve( __dirname, './src/' ),
-			alien: path.resolve( __dirname, './src/alien/' ),
-			keda: path.resolve( __dirname, './src/keda/' ),
-			shaders: path.resolve( __dirname, './src/shaders/' ),
-		}
-	}
+	//resolve: {
+	//alias: {
+	//root: path.resolve( __dirname, './src/' ),
+	//alien: path.resolve( __dirname, './src/alien/' ),
+	//keda: path.resolve( __dirname, './src/keda/' ),
+	//shaders: path.resolve( __dirname, './src/shaders/' ),
+	//}
+	//}
 };
 
 module.exports = ( env, argv ) => {

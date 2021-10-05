@@ -1,6 +1,4 @@
 export default /*glsl*/`
-    //keda/glsl/bayerMatrixDither.js
-
     vec3 bayerMatrixDither( vec3 color ) {
 
         const float BAYER_MATRIX[ 64 ] = float[ 64 ](
@@ -22,6 +20,4 @@ export default /*glsl*/`
         return color + dithering;
 
     }
-
-    //
 `;

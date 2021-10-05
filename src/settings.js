@@ -1,9 +1,8 @@
 import vesuna from 'vesuna';
 import winlo from 'winlo';
 
-import { RenderManager } from './scene/alien/RenderManager';
-import { config } from './config';
 import { gui } from './gui';
+import { render } from './render';
 
 const RANDOM_CAP = 30;
 
@@ -17,9 +16,39 @@ const settings = {
 
 	orb: null,
 
-	defaults: copy( config ),
-	current: copy( config ),
-	base: copy( config ),
+	defaults: {
+
+		bgColor: '#222326',
+
+		orb: {
+			passes: 3,
+			speed: 6,
+			smoothness: 7,
+
+			value1: 0.7,
+			value2: 0.9,
+
+			rotationSpeed: {
+				x: 0,
+				y: 9,
+				z: 0,
+			},
+		},
+
+		bloom: {
+			threshold: 0.6,
+			strength: 0.2,
+			radius: 0.8,
+		},
+
+		adjustments: {
+			hue: 0,
+			saturation: 1.5,
+		},
+
+	},
+	base: null,
+	current: null,
 
 	init: () => {
 
@@ -122,7 +151,7 @@ const settings = {
 
 		Object.entries( current.adjustments ).forEach( ( [ key, value ] ) => {
 
-			RenderManager.post.adjustments[ key ] = value;
+			render.post.adjustments[ key ] = value;
 
 		} );
 
@@ -172,7 +201,7 @@ const settings = {
 
 		Object.keys( current.adjustments ).forEach( key => {
 
-			current.adjustments[ key ] = RenderManager.post.adjustments[ key ];
+			current.adjustments[ key ] = render.post.adjustments[ key ];
 
 		} );
 
@@ -195,6 +224,9 @@ const settings = {
 		winlo.save( current, 'settings', { defaults: base, hash: 'seed' } );
 
 	},
+
 };
+settings.current = copy( settings.defaults );
+settings.base = copy( settings.defaults );
 
 export { settings };

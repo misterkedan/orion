@@ -1,5 +1,5 @@
 import * as dat from 'dat.gui';
-import { RenderManager } from './scene/alien/RenderManager';
+import { render } from './render';
 import { settings } from './settings';
 
 const gui = new dat.GUI();
@@ -26,8 +26,8 @@ gui.init = function () {
 	const color = gui.addFolder( 'Color' );
 	color.add( orb, 'value1', 0, 1 ).step( 0.01 ).listen();
 	color.add( orb, 'value2', 0, 1 ).step( 0.01 ).listen();
-	color.add( RenderManager.post.adjustments, 'hue', 0, Math.PI * 2 ).step( 0.01 );
-	color.add( RenderManager.post.adjustments, 'saturation', 0, 3 ).step( 0.01 );
+	color.add( render.post.adjustments, 'hue', 0, Math.PI * 2 ).step( 0.01 );
+	color.add( render.post.adjustments, 'saturation', 0, 3 ).step( 0.01 );
 	color.open();
 
 	const set = gui.addFolder( 'Settings' );
