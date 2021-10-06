@@ -1,3 +1,9 @@
+/**
+ * @author Pierre Keda
+ * Ready-to-use FXAA Pass.
+ * Based on https://threejs.org/examples/?q=post#webgl_postprocessing_fxaa
+ */
+
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader';
 

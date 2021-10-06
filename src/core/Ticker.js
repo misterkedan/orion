@@ -1,8 +1,14 @@
-class AnimationClock {
+/**
+ * @author Pierre Keda
+ */
+
+class Ticker {
 
 	/**
-	 * Fires the specified callback or array of callbacks at a specific FPS rate.
-	 * @param { Function|Array[Function] } 	callbacks 	Function
+	 * Fires the specified callback or array of callbacks repeatedly, on every
+	 * animation frame or on a specified FPS rate.
+	 * @param { Function|Array[Function] } callbacks
+	 * 							Function(s) that will be repeatedly called.
 	 * @param { Number } fps	Frames per second limiter, 0 for uncapped frames.
 	 */
 	constructor( callbacks = null, fps = 0 ) {
@@ -15,7 +21,7 @@ class AnimationClock {
 		this._last = 0;
 		this._delta = 0;
 		this._isPlaying = false;
-		this._onTick = this.update.bind( this );
+		this._tick = this.tick.bind( this );
 
 	}
 
@@ -62,7 +68,7 @@ class AnimationClock {
 		this._last = this.now;
 		this._delta = 0;
 		this._isPlaying = true;
-		this.tick();
+		this.requestFrame();
 
 	}
 
@@ -79,13 +85,13 @@ class AnimationClock {
 
 	}
 
-	update() {
+	tick() {
 
-		if ( this.isPlaying ) this.tick();
+		if ( this.isPlaying ) this.requestFrame();
 		else return;
 
 		const now = this.now;
-		let delta = Math.min( AnimationClock.maxDelta, now - this._last );
+		let delta = Math.min( Ticker.maxDelta, now - this._last );
 
 		this._last = now;
 		this._delta += delta;
@@ -104,9 +110,9 @@ class AnimationClock {
 
 	}
 
-	tick() {
+	requestFrame() {
 
-		requestAnimationFrame( this._onTick );
+		requestAnimationFrame( this._tick );
 
 	}
 
@@ -143,13 +149,13 @@ class AnimationClock {
 
 	get now() {
 
-		return AnimationClock.time.now();
+		return Ticker.time.now();
 
 	}
 
 }
 
-AnimationClock.maxDelta = 100;
-AnimationClock.time = ( performance === undefined ) ? Date : performance;
+Ticker.maxDelta = 100;
+Ticker.time = ( performance === undefined ) ? Date : performance;
 
-export { AnimationClock };
+export { Ticker };

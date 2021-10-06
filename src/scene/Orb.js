@@ -1,3 +1,6 @@
+/**
+ * @authors Thibaut Foussard, Pierre Keda
+ */
 import { Mesh, ShaderMaterial, SphereGeometry } from 'three';
 import vertexShader from '../shaders/Orb.vert.glsl';
 import fragmentShader from '../shaders/Orb.frag.glsl';
@@ -7,9 +10,8 @@ class Orb extends Mesh {
 
 	constructor( segments ) {
 
-		const {
-			passes, smoothness, speed, value1, value2, rotationSpeed
-		} = settings.current.orb;
+		const { passes, smoothness, speed, value1, value2, rotationSpeed }
+			= settings.current.orb;
 
 		const geometry = new SphereGeometry( 1, segments, segments );
 
@@ -57,83 +59,21 @@ class Orb extends Mesh {
 
 	}
 
-	/*-------------------------------------------------------------------------/
+	/*eslint-disable*/
+	get passes() 	{ return this.material.uniforms.uPasses.value; }
+	get smoothness(){ return this.material.uniforms.uSmoothness.value; }
+	get speed() 	{ return this.material.uniforms.uSpeed.value; }
+	get time() 		{ return this.material.uniforms.uTime.value; }
+	get value1() 	{ return this.material.uniforms.uValue1.value; }
+	get value2() 	{ return this.material.uniforms.uValue2.value; }
 
-		GUI Getters/Setters
-
-	/-------------------------------------------------------------------------*/
-
-	get passes() {
-
-		return this.material.uniforms.uPasses.value;
-
-	}
-
-	set passes( passes ) {
-
-		this.material.uniforms.uPasses.value = passes;
-
-	}
-
-	get smoothness() {
-
-		return this.material.uniforms.uSmoothness.value;
-
-	}
-
-	set smoothness( smoothness ) {
-
-		this.material.uniforms.uSmoothness.value = smoothness;
-
-	}
-
-	get speed() {
-
-		return this.material.uniforms.uSpeed.value;
-
-	}
-
-	set speed( speed ) {
-
-		this.material.uniforms.uSpeed.value = speed;
-
-	}
-
-	get time() {
-
-		return this.material.uniforms.uTime.value;
-
-	}
-
-	set time( time ) {
-
-		this.material.uniforms.uTime.value = time;
-
-	}
-
-	get value1() {
-
-		return this.material.uniforms.uValue1.value;
-
-	}
-
-	set value1( value ) {
-
-		this.material.uniforms.uValue1.value = value;
-
-	}
-
-	get value2() {
-
-		return this.material.uniforms.uValue2.value;
-
-	}
-
-	set value2( value ) {
-
-		this.material.uniforms.uValue2.value = value;
-
-	}
+	set passes( value ) { this.material.uniforms.uPasses.value = value; }
+	set smoothness( value ) { this.material.uniforms.uSmoothness.value = value; }
+	set speed( value ) 	{ this.material.uniforms.uSpeed.value = value; }
+	set time( value ) 	{ this.material.uniforms.uTime.value = value; }
+	set value1( value ) { this.material.uniforms.uValue1.value = value; }
+	set value2( value ) { this.material.uniforms.uValue2.value = value; }
+	/*eslint-enable*/
 
 }
 

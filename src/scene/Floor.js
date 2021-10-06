@@ -1,5 +1,10 @@
+/**
+ * @author pschroen / https://ufo.ai/
+ * Edit by Pierre Keda
+ */
+
 import { Group, MathUtils, Mesh, PlaneGeometry, RepeatWrapping } from 'three';
-import { Reflector } from './Reflector';
+import { Reflector } from '../core/Reflector';
 import { ReflectorMaterial } from '../materials/ReflectorMaterial';
 
 class Floor extends Group {

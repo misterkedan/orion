@@ -2,9 +2,10 @@ import { TextureLoader } from 'three';
 
 import winlo from 'winlo';
 
-import { AnimationClock } from './keda/AnimationClock';
+import { Ticker } from './core/Ticker';
 import { Floor } from './scene/Floor';
 import { Orb } from './scene/Orb.js';
+
 import { render } from './render';
 import { stage } from './stage';
 import { controls } from './controls';
@@ -61,7 +62,7 @@ function animate( time ) {
 }
 
 const MAX_FPS = 60;
-const clock = new AnimationClock( animate, MAX_FPS );
+const ticker = new Ticker( animate, MAX_FPS );
 
 // Load texture then init
 
@@ -87,6 +88,6 @@ function init( texture ) {
 	gui.init();
 	controls.init();
 
-	clock.start();
+	ticker.start();
 
 }

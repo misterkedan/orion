@@ -1,6 +1,5 @@
 /**
  * @author pschroen / https://ufo.ai/
- *
  * Based on {@link module:three/examples/jsm/objects/Reflector.js} by Slayvin
  */
 
