@@ -52,6 +52,6 @@ const random = {
 
 };
 
-const options = { defaults, random };
+const config = { defaults, random };
 
-export { options };
+export { config };

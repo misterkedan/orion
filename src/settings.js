@@ -3,7 +3,7 @@ import winlo from 'winlo';
 import vesuna from 'vesuna';
 
 import { gui } from './gui';
-import { options } from './options';
+import { config } from './config';
 import { render } from './render';
 
 let settings;
@@ -83,7 +83,7 @@ function applyHash() {
 
 function applyDefaults() {
 
-	const { defaults } = options;
+	const { defaults } = config;
 	settings.current = cloneDeep( defaults );
 	settings.base = cloneDeep( defaults );
 
@@ -114,7 +114,7 @@ function random( seed ) {
 
 	};
 
-	const { random } = options;
+	const { random } = config;
 	const { adjustments, orb } = settings.current;
 
 	Object.entries( random.adjustments ).forEach( ( [ key, value ] ) => {
