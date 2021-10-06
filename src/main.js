@@ -12,17 +12,13 @@ import { settings } from './settings';
 import { controls } from './controls';
 import { gui } from './gui';
 
-// Init
+// Load settings
 
-if ( ! winlo.hash && ! winlo.search ) {
-
-	winlo.hash = '#';
-	winlo.search = '';
-
-}
-
-winlo.toFixedDigits = 2;
+winlo.init();
+winlo.digits = 2;
 settings.load();
+
+// Init
 
 const { renderer, canvas, scene, camera } = stage;
 document.getElementById( 'main' ).appendChild( canvas );

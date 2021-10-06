@@ -20,20 +20,20 @@ function read() {
 
 	Object.keys( current.adjustments ).forEach( key => {
 
-		current.adjustments[ key ] = render.post.adjustments[ key ];
+		current.adjustments[ key ] = winlo.round( render.post.adjustments[ key ] );
 
 	} );
 
 	Object.keys( current.orb ).forEach( key => {
 
 		if ( key === 'rotationSpeed' ) return;
-		current.orb[ key ] = orb[ key ];
+		current.orb[ key ] = winlo.round( orb[ key ] );
 
 	} );
 
 	Object.keys( current.orb.rotationSpeed ).forEach( key => {
 
-		current.orb.rotationSpeed[ key ] = orb.rotationSpeed[ key ];
+		current.orb.rotationSpeed[ key ] = winlo.round( orb.rotationSpeed[ key ] );
 
 	} );
 
@@ -43,8 +43,6 @@ function write() {
 
 	const { orb, current } = settings;
 	if ( ! settings.orb ) return;
-
-	console.log( current );
 
 	const { adjustments } = render.post;
 	Object.entries( current.adjustments ).forEach( ( [ key, value ] ) => {
@@ -85,7 +83,7 @@ function applyDefaults() {
 
 	const { defaults } = config;
 	settings.current = cloneDeep( defaults );
-	settings.base = cloneDeep( defaults );
+	settings.reference = cloneDeep( defaults );
 
 }
 
@@ -96,7 +94,7 @@ function applyDefaults() {
 /-----------------------------------------------------------------------------*/
 
 const WINLO_PARAM = 'settings';
-const SEED = 'seed';
+const hash = 'seed';
 
 function random( seed ) {
 
@@ -109,8 +107,7 @@ function random( seed ) {
 
 		const { min, max, round } = value;
 		const random = vesuna.random( min, max, round );
-		const digits = Math.pow( 10, 2 );
-		target[ key ] = Math.round( random * digits ) / digits;
+		target[ key ] = winlo.round( random );
 
 	};
 
@@ -135,15 +132,14 @@ function random( seed ) {
 
 	} );
 
-	settings.base = cloneDeep( settings.current );
+	settings.reference = cloneDeep( settings.current );
 
 	write();
 
 	if ( ! seed ) {
 
 		seed = vesuna.seed;
-		winlo.save( { seed }, false, { hash: SEED } );
-		winlo.clear();
+		winlo.save( { seed }, false, { hash } );
 
 	}
 
@@ -152,7 +148,7 @@ function random( seed ) {
 function load() {
 
 	applyHash();
-	winlo.load( settings.current, WINLO_PARAM, { hash: SEED } );
+	winlo.load( settings.current, WINLO_PARAM, { hash } );
 
 	write();
 
@@ -162,19 +158,14 @@ function save() {
 
 	read();
 
-	const { current, base } = settings;
-	winlo.save( current, WINLO_PARAM, { defaults: base, hash: SEED } );
+	const { current, reference } = settings;
+	winlo.save( current, WINLO_PARAM, { reference, hash } );
 
 }
 
 function reset( hardReset = true ) {
 
-	if ( hardReset ) {
-
-		winlo.hash = '#';
-		winlo.clear();
-
-	}
+	if ( hardReset ) winlo.reset();
 
 	applyDefaults();
 	write();
