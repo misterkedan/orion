@@ -38,8 +38,6 @@ function resize() {
 
 	const { innerWidth, innerHeight, devicePixelRatio } = window;
 
-	//const width = Math.round( innerWidth / devicePixelRatio );
-	//const height = Math.round( innerHeight / devicePixelRatio );
 	const width = innerWidth;
 	const height = innerHeight;
 
@@ -62,9 +60,6 @@ function animate( time ) {
 
 }
 
-//const mobile = !! navigator.maxTouchPoints &&
-//	Math.max( window.innerWidth, window.innerHeight ) < 1000;
-//const maxFPS = ( mobile ) ? 60 : 0;
 const MAX_FPS = 60;
 const clock = new AnimationClock( animate, MAX_FPS );
 
@@ -90,8 +85,7 @@ function init( texture ) {
 	settings.orb = orb;
 	settings.init();
 	gui.init();
-
-	controls.init( orb );
+	controls.init();
 
 	clock.start();
 

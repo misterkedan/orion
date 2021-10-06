@@ -18,8 +18,6 @@ const settings = {
 
 	defaults: {
 
-		bgColor: '#222326',
-
 		orb: {
 			passes: 3,
 			speed: 6,

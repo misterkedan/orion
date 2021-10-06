@@ -1,3 +1,7 @@
+/**
+ * @author pschroen / https://ufo.ai/
+ */
+
 import { Color, GLSL3, Matrix3, Matrix4, RawShaderMaterial, Uniform } from 'three';
 
 import vertexShader from '../shaders/ReflectorMaterial.vert.glsl';

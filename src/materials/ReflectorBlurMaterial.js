@@ -1,3 +1,7 @@
+/**
+ * @author pschroen / https://ufo.ai/
+ */
+
 import { GLSL3, NoBlending, RawShaderMaterial, Uniform, Vector2 } from 'three';
 
 import vertexShader from '../shaders/ReflectorBlurPass.vert.glsl';

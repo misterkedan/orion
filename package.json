@@ -1,6 +1,6 @@
 {
   "name": "orion",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
@@ -12,9 +12,6 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.15.5",
-    "@babel/eslint-parser": "^7.15.7",
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.15.6",
     "babel-loader": "^8.2.2",
     "eslint": "^7.32.0",
@@ -27,11 +24,9 @@
   },
   "dependencies": {
     "dat.gui": "^0.7.7",
-    "eslint-config-mdcs": "^5.0.0",
     "three": "^0.132.2",
     "vesuna": "^1.0.0",
     "winlo": "^0.5.0"
   },
-  "sideEffects": false,
   "private": true
 }

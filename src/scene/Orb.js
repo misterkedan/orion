@@ -34,23 +34,11 @@ class Orb extends Mesh {
 
 	update( time ) {
 
-		//console.log( { time, delta } );
 		let { rotation, rotationSpeed } = this;
 
-		//if ( delta > 16.67 ) delta = 16.67;
-		//else if ( delta < 1)
-
-		//console.log( delta );
-
-		//const FACTOR = 0.00001;
-		//delta *= FACTOR;
-
-		//rotation.x += delta * rotationSpeed.x;
-		//rotation.y += delta * rotationSpeed.y;
-		//rotation.z += delta * rotationSpeed.z;
+		const FACTOR = 0.01;
 		time /= 1000;
 
-		const FACTOR = 0.01;
 		rotation.x = time * rotationSpeed.x * FACTOR;
 		rotation.y = time * rotationSpeed.y * FACTOR;
 		rotation.z = time * rotationSpeed.z * FACTOR;

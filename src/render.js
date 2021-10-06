@@ -56,10 +56,9 @@ function resize( width, height, devicePixelRatio ) {
 
 function update() {
 
-	this.composer.render();
+	render.composer.render();
 
 }
-
 
 render = { init, resize, update };
 

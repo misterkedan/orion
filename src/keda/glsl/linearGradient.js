@@ -1,6 +1,4 @@
 export default /*glsl*/`
-    //keda/glsl/linearGradient.js
-
     vec3 linearGradient( 
         vec2 origin, vec2 target, vec3 color1, vec3 color2, float angle
     ) {
@@ -17,6 +15,4 @@ export default /*glsl*/`
         );
 
     }
-
-    //
 `;

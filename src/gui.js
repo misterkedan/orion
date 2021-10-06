@@ -36,11 +36,6 @@ gui.init = function () {
 	set.add( { [ SAVE_LABEL ]: settings.save }, SAVE_LABEL );
 	set.open();
 
-	// Test
-	//const pixelRatio = window.devicePixelRatio > 2 ? 2 : 1;
-	//const largeWidth = pixelRatio * 640;
-	//if ( window.innerWidth < largeWidth ) gui.close();
-
 	gui.close();
 
 };

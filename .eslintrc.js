@@ -10,13 +10,9 @@ module.exports = {
 	'ignorePatterns': [
 		'lib/*', 'vendor/*', '*.min.js', '_/*'
 	],
-	'parser': '@babel/eslint-parser',
 	'parserOptions': {
 		'ecmaVersion': 12,
 		'sourceType': 'module',
-		'babelOptions': {
-			'configFile': './.babelrc.json'
-		}
 	},
 	'rules': {
 		'indent': 'warn',
