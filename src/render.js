@@ -10,17 +10,17 @@ import { VerticalVignettePass } from './postprocessing/VerticalVignettePass';
 import { settings } from './settings';
 
 let render;
+let composer;
+let post;
 
 function init( renderer, scene, camera ) {
-
-	Object.assign( render, { renderer, scene, camera } );
 
 	const { innerWidth, innerHeight, devicePixelRatio } = window;
 	const width = Math.round( innerWidth / devicePixelRatio );
 	const height = Math.round( innerHeight / devicePixelRatio );
 	const { bloom, adjustments } = settings.current;
 
-	const post = {
+	post = {
 		render: new RenderPass( scene, camera ),
 		fxaa: new FXAAPass(),
 		bloom: new DitheredUnrealBloomPass(
@@ -33,16 +33,15 @@ function init( renderer, scene, camera ) {
 		adjustments: new AdjustmentsPass( adjustments ),
 	};
 
-	const composer = new EffectComposer( renderer );
+	composer = new EffectComposer( renderer );
 
 	Object.values( post ).forEach( pass => composer.addPass( pass )	);
-	Object.assign( render, { composer, post } );
+
+	Object.assign( render, { renderer, scene, camera, post, composer } );
 
 }
 
 function resize( width, height, devicePixelRatio ) {
-
-	const { composer, post } = render;
 
 	composer.setSize( width, height );
 
@@ -56,7 +55,7 @@ function resize( width, height, devicePixelRatio ) {
 
 function update() {
 
-	render.composer.render();
+	composer.render();
 
 }
 

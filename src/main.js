@@ -8,18 +8,21 @@ import { Orb } from './scene/Orb.js';
 
 import { render } from './render';
 import { stage } from './stage';
-import { controls } from './controls';
 import { settings } from './settings';
+import { controls } from './controls';
 import { gui } from './gui';
 
 // Init
 
 if ( ! winlo.hash && ! winlo.search ) {
 
-	winlo.hash = '#/';
+	winlo.hash = '#';
 	winlo.search = '';
 
 }
+
+winlo.toFixedDigits = 2;
+settings.load();
 
 const { renderer, canvas, scene, camera } = stage;
 document.getElementById( 'main' ).appendChild( canvas );
@@ -77,17 +80,16 @@ loader.load(
 
 function init( texture ) {
 
+	settings.init( orb );
 	floor.init( texture, scene );
 	render.init( renderer, scene, camera );
+	controls.init();
 
 	window.addEventListener( 'resize', resize );
 	resize();
 
-	settings.orb = orb;
-	settings.init();
-	gui.init();
-	controls.init();
-
 	ticker.start();
+
+	setTimeout( gui.init, 0 ); // temp hack for weird dat.gui+winlo bug
 
 }

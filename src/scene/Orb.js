@@ -10,8 +10,9 @@ class Orb extends Mesh {
 
 	constructor( segments ) {
 
-		const { passes, smoothness, speed, value1, value2, rotationSpeed }
-			= settings.current.orb;
+		const {
+			passes, smoothness, speed, value1, value2, rotationSpeed
+		} = settings.current.orb;
 
 		const geometry = new SphereGeometry( 1, segments, segments );
 

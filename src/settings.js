@@ -1,230 +1,194 @@
-import vesuna from 'vesuna';
+import cloneDeep from 'lodash.clonedeep';
 import winlo from 'winlo';
+import vesuna from 'vesuna';
 
 import { gui } from './gui';
+import { options } from './options';
 import { render } from './render';
 
-const RANDOM_CAP = 30;
+let settings;
 
-function copy( object ) {
+/*-----------------------------------------------------------------------------/
 
-	return JSON.parse( JSON.stringify( object ) );
+	Private
+
+/-----------------------------------------------------------------------------*/
+
+function read() {
+
+	const { orb, current } = settings;
+
+	Object.keys( current.adjustments ).forEach( key => {
+
+		current.adjustments[ key ] = render.post.adjustments[ key ];
+
+	} );
+
+	Object.keys( current.orb ).forEach( key => {
+
+		if ( key === 'rotationSpeed' ) return;
+		current.orb[ key ] = orb[ key ];
+
+	} );
+
+	Object.keys( current.orb.rotationSpeed ).forEach( key => {
+
+		current.orb.rotationSpeed[ key ] = orb.rotationSpeed[ key ];
+
+	} );
 
 }
 
-const settings = {
+function write() {
 
-	orb: null,
+	const { orb, current } = settings;
+	if ( ! settings.orb ) return;
 
-	defaults: {
+	console.log( current );
 
-		orb: {
-			passes: 3,
-			speed: 6,
-			smoothness: 7,
+	const { adjustments } = render.post;
+	Object.entries( current.adjustments ).forEach( ( [ key, value ] ) => {
 
-			value1: 0.7,
-			value2: 0.9,
+		adjustments[ key ] = value;
 
-			rotationSpeed: {
-				x: 0,
-				y: 9,
-				z: 0,
-			},
-		},
+	} );
 
-		bloom: {
-			threshold: 0.6,
-			strength: 0.2,
-			radius: 0.8,
-		},
+	Object.entries( current.orb ).forEach( ( [ key, value ] ) => {
 
-		adjustments: {
-			hue: 0,
-			saturation: 1.5,
-		},
+		if ( key !== 'rotationSpeed' ) orb[ key ] = value;
 
-	},
-	base: null,
-	current: null,
+	} );
 
-	init: () => {
+	Object.entries( current.orb.rotationSpeed ).forEach( ( [ key, value ] ) => {
 
-		settings.load();
-		window.addEventListener( 'hashchange', settings.applyHash );
+		orb.rotationSpeed[ key ] = value;
 
-	},
+	} );
 
-	randomize: {
-		adjustments: {
-			hue: { min: 0, max: 2 * Math.PI },
-			saturation: { min: 0, max: 3 },
-		},
-		orb: {
-			passes: { min: 2, max: 4, round: true },
-			speed: { min: 1, max: RANDOM_CAP, round: true },
-			smoothness: { min: 5, max: 10, round: true },
-			value1: { min: 0, max: 1 },
-			value2: { min: 0, max: 1 },
-		},
-		rotationSpeed: {
-			x: { min: - RANDOM_CAP, max: RANDOM_CAP, round: true },
-			y: { min: - RANDOM_CAP, max: RANDOM_CAP, round: true },
-			z: { min: - RANDOM_CAP, max: RANDOM_CAP, round: true },
-		},
-	},
+	gui.updateDisplay();
 
-	reset: ( hardReset = true ) => {
+}
 
-		if ( hardReset ) {
+function applyHash() {
 
-			winlo.clear();
-			winlo.hash = '#/';
+	const { hash } = winlo;
 
-		}
+	const TITLE = 'Orion';
+	document.title = ( hash ) ? `${TITLE} #${hash}` : TITLE;
 
-		let { defaults, update, save } = settings;
+	if ( hash ) random( hash );
+	else reset( false );
 
-		settings.current = copy( defaults );
-		settings.base = copy( defaults );
-		update();
+}
 
-		if ( hardReset ) save();
+function applyDefaults() {
 
-	},
+	const { defaults } = options;
+	settings.current = cloneDeep( defaults );
+	settings.base = cloneDeep( defaults );
 
-	random: ( seed ) => {
+}
 
-		let { current, randomize } = settings;
+/*-----------------------------------------------------------------------------/
 
-		const setRandomValue = ( target, key, value )=> {
+	Public
 
-			const { min, max, round } = value;
-			target[ key ] = vesuna.random( min, max, round );
+/-----------------------------------------------------------------------------*/
 
-		};
+const WINLO_PARAM = 'settings';
+const SEED = 'seed';
 
-		if ( seed ) vesuna.seed = seed;
-		else vesuna.autoseed();
+function random( seed ) {
 
-		current.seed = vesuna.seed;
+	if ( seed ) vesuna.seed = seed;
+	else vesuna.autoseed();
 
-		Object.entries( randomize.adjustments ).forEach( ( [ key, value ] ) => {
+	settings.current.seed = vesuna.seed;
 
-			if ( vesuna.random() > 0.5 )
-				setRandomValue( current.adjustments, key, value );
-			else current.adjustments[ key ] = 0;
+	const setRandomValue = ( target, key, value )=> {
 
-		} );
+		const { min, max, round } = value;
+		const random = vesuna.random( min, max, round );
+		const digits = Math.pow( 10, 2 );
+		target[ key ] = Math.round( random * digits ) / digits;
 
-		Object.entries( randomize.orb ).forEach( ( [ key, value ] ) =>
-			setRandomValue( current.orb, key, value )
-		);
+	};
 
-		Object.entries( randomize.rotationSpeed ).forEach( ( [ key, value ] ) => {
+	const { random } = options;
+	const { adjustments, orb } = settings.current;
 
-			if ( vesuna.random() > 0.66 )
-				setRandomValue( current.orb.rotationSpeed, key, value );
-			else current.orb.rotationSpeed[ key ] = 0;
+	Object.entries( random.adjustments ).forEach( ( [ key, value ] ) => {
 
-		} );
+		if ( vesuna.random() > 0.5 ) setRandomValue( adjustments, key, value );
+		else adjustments[ key ] = ( vesuna.bool() ) ? value.min : value.max;
 
-		settings.base = copy( settings.current );
+	} );
 
-		settings.update();
+	Object.entries( random.orb ).forEach( ( [ key, value ] ) =>
+		setRandomValue( orb, key, value )
+	);
 
-		if ( ! seed ) {
+	Object.entries( random.rotationSpeed ).forEach( ( [ key, value ] ) => {
 
-			seed = vesuna.seed;
-			winlo.save( { seed }, false, { hash:'seed' } );
-			winlo.clear();
+		if ( vesuna.random() > 0.66 ) setRandomValue( orb.rotationSpeed, key, value );
+		else orb.rotationSpeed[ key ] = 0;
 
-		}
+	} );
 
-	},
+	settings.base = cloneDeep( settings.current );
 
-	update:() => {
+	write();
 
-		const { current, orb } = settings;
+	if ( ! seed ) {
 
-		Object.entries( current.adjustments ).forEach( ( [ key, value ] ) => {
+		seed = vesuna.seed;
+		winlo.save( { seed }, false, { hash: SEED } );
+		winlo.clear();
 
-			render.post.adjustments[ key ] = value;
+	}
 
-		} );
+}
 
-		Object.entries( current.orb ).forEach( ( [ key, value ] ) => {
+function load() {
 
-			if ( key !== 'rotationSpeed' ) orb[ key ] = value;
+	applyHash();
+	winlo.load( settings.current, WINLO_PARAM, { hash: SEED } );
 
-		} );
+	write();
 
-		Object.entries( current.orb.rotationSpeed ).forEach( ( [ key, value ] ) => {
+}
 
-			orb.rotationSpeed[ key ] = value;
+function save() {
 
-		} );
+	read();
 
-		gui.updateDisplay();
+	const { current, base } = settings;
+	winlo.save( current, WINLO_PARAM, { defaults: base, hash: SEED } );
 
-	},
+}
 
-	applyHash: () => {
+function reset( hardReset = true ) {
 
-		const hash = winlo.hash;
+	if ( hardReset ) {
 
-		const TITLE = 'Orion';
-		document.title = ( hash ) ? `${TITLE} #${hash}` : TITLE;
+		winlo.hash = '#';
+		winlo.clear();
 
-		if ( hash ) settings.random( hash );
-		else settings.reset( false );
+	}
 
-	},
+	applyDefaults();
+	write();
 
-	load: () => {
+}
 
-		const { current, update } = settings;
+function init( orb ) {
 
-		settings.applyHash();
+	window.addEventListener( 'hashchange', applyHash );
+	settings.orb = orb;
 
-		winlo.load( current, 'settings', { hash: 'seed' } );
+}
 
-		update();
-
-	},
-
-	save: ()=> {
-
-		const { current, base, orb } = settings;
-
-		Object.keys( current.adjustments ).forEach( key => {
-
-			current.adjustments[ key ] = render.post.adjustments[ key ];
-
-		} );
-
-		Object.keys( current.orb ).forEach( key => {
-
-			if ( key === 'rotationSpeed' ) return;
-			current.orb[ key ] = orb[ key ];
-
-		} );
-
-		Object.keys( current.orb.rotationSpeed ).forEach( key => {
-
-
-			current.orb.rotationSpeed[ key ] = orb.rotationSpeed[ key ];
-
-		} );
-
-		const { seed } = current;
-		if ( seed ) winlo.save( { seed }, false, { hash:'seed' } );
-		winlo.save( current, 'settings', { defaults: base, hash: 'seed' } );
-
-	},
-
-};
-settings.current = copy( settings.defaults );
-settings.base = copy( settings.defaults );
+settings = { random, save, load, reset, init };
+applyDefaults();
 
 export { settings };

@@ -1,4 +1,5 @@
 import * as dat from 'dat.gui';
+
 import { render } from './render';
 import { settings } from './settings';
 
@@ -6,11 +7,9 @@ const gui = new dat.GUI();
 
 gui.init = function () {
 
-	const SPEED_CAP = 100;
-	const SAVE_LABEL = 'save (URL)';
-
 	const orb = settings.orb;
 
+	const SPEED_CAP = 100;
 	const main = gui.addFolder( 'Orb' );
 	main.add( orb, 'passes', 1, 4 ).step( 1 );
 	main.add( orb, 'smoothness', 3, 30 ).step( 1 );
@@ -30,6 +29,7 @@ gui.init = function () {
 	color.add( render.post.adjustments, 'saturation', 0, 3 ).step( 0.01 );
 	color.open();
 
+	const SAVE_LABEL = 'save (URL)';
 	const set = gui.addFolder( 'Settings' );
 	set.add( settings, 'reset' );
 	set.add( settings, 'random' );
