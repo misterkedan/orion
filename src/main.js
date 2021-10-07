@@ -2,34 +2,43 @@ import { TextureLoader } from 'three';
 
 import winlo from 'winlo';
 
-import { Ticker } from './core/Ticker';
 import { Floor } from './scene/Floor';
 import { Orb } from './scene/Orb.js';
+import { Ticker } from './core/Ticker';
 
+import { config } from './config';
+import { controls } from './controls';
+import { gui } from './gui';
 import { render } from './render';
 import { stage } from './stage';
 import { settings } from './settings';
-import { controls } from './controls';
-import { gui } from './gui';
+
+const {
+	FLOOR_SIZE,
+	FLOOR_TEXTURE_URL,
+	FLOOR_Y,
+	MAX_FPS,
+	ORB_Z_LANDSCAPE,
+	ORB_Z_PORTRAIT,
+	ORB_SEGMENTS,
+	DIGITS,
+} = config;
 
 // Load settings
 
 winlo.init();
-winlo.digits = 2;
+winlo.digits = DIGITS;
 settings.load();
-
-// Init
-
-const { renderer, canvas, scene, camera } = stage;
-document.getElementById( 'main' ).appendChild( canvas );
 
 // Scene
 
-const floor = new Floor( 110 );
-floor.position.y = - 1.35;
+const { renderer, scene, camera } = stage;
+
+const floor = new Floor( FLOOR_SIZE );
+floor.position.y = FLOOR_Y;
 scene.add( floor );
 
-const orb = new Orb( 320 );
+const orb = new Orb( ORB_SEGMENTS );
 scene.add( orb );
 
 // Resize
@@ -45,7 +54,7 @@ function resize() {
 		item.resize( width, height, devicePixelRatio )
 	);
 
-	orb.position.z = ( width < height ) ? 2 : 0;
+	orb.position.z = ( width < height ) ? ORB_Z_PORTRAIT : ORB_Z_LANDSCAPE;
 
 
 }
@@ -60,15 +69,14 @@ function animate( time ) {
 
 }
 
-const MAX_FPS = 60;
 const ticker = new Ticker( animate, MAX_FPS );
 
-// Load texture then init
+// Load floor texture, then init
 
 const loader = new TextureLoader();
 
 loader.load(
-	'textures/polished_concrete_basecolor.jpg', // URL
+	FLOOR_TEXTURE_URL, // URL
 	( texture ) => init( texture ), // onLoad
 	undefined,		// onProgress
 	() => init() 	// onError

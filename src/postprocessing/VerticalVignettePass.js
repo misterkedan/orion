@@ -33,9 +33,9 @@ VerticalVignettePass.shader = {
 
 	uniforms: {
 		tDiffuse: 	{ value: null },
-		uTop: 		{ value: 1.0 },
-		uBottom: 	{ value: 1.0 },
-		uFalloff: 	{ value: 0.5 },
+		uTop: 		{ value: 0 },
+		uBottom: 	{ value: 0 },
+		uFalloff: 	{ value: 0 },
 	},
 
 	vertexShader: varyingUV,
@@ -51,9 +51,9 @@ VerticalVignettePass.shader = {
 
 		void main() {
 
-			float falloff = uFalloff; // 0.25
-			float amount = uBottom; // 1.2
-			if ( vUv.y > 0.5 ) amount = uTop; // 0.72
+			float falloff = uFalloff;
+			float amount = uBottom;
+			if ( vUv.y > 0.5 ) amount = uTop;
 
 			vec4 color = texture2D( tDiffuse, vUv );
 

@@ -5,6 +5,7 @@ import { Mesh, ShaderMaterial, SphereGeometry } from 'three';
 import vertexShader from '../shaders/Orb.vert.glsl';
 import fragmentShader from '../shaders/Orb.frag.glsl';
 import { settings } from '../settings';
+import { config } from '../config';
 
 class Orb extends Mesh {
 
@@ -37,14 +38,14 @@ class Orb extends Mesh {
 
 	update( time ) {
 
-		let { rotation, rotationSpeed } = this;
+		const { ORB_ROTATION_SPEED } = config;
+		const { rotation, rotationSpeed } = this;
 
-		const FACTOR = 0.01;
 		time /= 1000;
 
-		rotation.x = time * rotationSpeed.x * FACTOR;
-		rotation.y = time * rotationSpeed.y * FACTOR;
-		rotation.z = time * rotationSpeed.z * FACTOR;
+		rotation.x = time * rotationSpeed.x * ORB_ROTATION_SPEED;
+		rotation.y = time * rotationSpeed.y * ORB_ROTATION_SPEED;
+		rotation.z = time * rotationSpeed.z * ORB_ROTATION_SPEED;
 
 		this.time = time;
 

@@ -31,6 +31,10 @@ class Ticker {
 
 	/-------------------------------------------------------------------------*/
 
+	/**
+	 * Add a function to the animation loop.
+	 * @param { Function } callback  Function that will start looping.
+	 */
 	add( callback ) {
 
 		if ( this.has( callback ) ) return;
@@ -38,6 +42,10 @@ class Ticker {
 
 	}
 
+	/**
+	 * Remove a function from the animation loop.
+	 * @param { Function } callback  Function that will stop looping.
+	 */
 	remove( callback ) {
 
 		if ( ! this.has( callback ) ) return;
@@ -45,6 +53,10 @@ class Ticker {
 
 	}
 
+	/**
+	 * Check if a function is currently in the animation loop.
+	 * @param { Function } callback  Function to check.
+	 */
 	has( callback ) {
 
 		return this.callbacks.includes( callback );

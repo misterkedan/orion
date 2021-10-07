@@ -9,17 +9,19 @@ import { ReflectorMaterial } from '../materials/ReflectorMaterial';
 
 class Floor extends Group {
 
-	constructor() {
+	constructor( size ) {
 
 		super();
 
 		this.reflector = new Reflector();
+		this.size = size;
 
 	}
 
 	init( map, scene ) {
 
-		const geometry = new PlaneGeometry( 110, 110 );
+		const { size } = this;
+		const geometry = new PlaneGeometry( size, size );
 
 		if ( map ) {
 

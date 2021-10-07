@@ -1,9 +1,9 @@
 import cloneDeep from 'lodash.clonedeep';
-import winlo from 'winlo';
 import vesuna from 'vesuna';
+import winlo from 'winlo';
 
-import { gui } from './gui';
 import { config } from './config';
+import { gui } from './gui';
 import { render } from './render';
 
 let settings;
@@ -13,6 +13,8 @@ let settings;
 	Private
 
 /-----------------------------------------------------------------------------*/
+
+const ROTATION_KEY = 'rotationSpeed';
 
 function read() {
 
@@ -26,7 +28,7 @@ function read() {
 
 	Object.keys( current.orb ).forEach( key => {
 
-		if ( key === 'rotationSpeed' ) return;
+		if ( key === ROTATION_KEY ) return;
 		current.orb[ key ] = winlo.round( orb[ key ] );
 
 	} );
@@ -53,7 +55,7 @@ function write() {
 
 	Object.entries( current.orb ).forEach( ( [ key, value ] ) => {
 
-		if ( key !== 'rotationSpeed' ) orb[ key ] = value;
+		if ( key !== ROTATION_KEY ) orb[ key ] = value;
 
 	} );
 
@@ -69,9 +71,9 @@ function write() {
 
 function applyHash() {
 
+	const { TITLE } = config;
 	const { hash } = winlo;
 
-	const TITLE = 'Orion';
 	document.title = ( hash ) ? `${TITLE} #${hash}` : TITLE;
 
 	if ( hash ) random( hash );
@@ -93,7 +95,7 @@ function applyDefaults() {
 
 /-----------------------------------------------------------------------------*/
 
-const WINLO_PARAM = 'settings';
+const { WINLO_PARAM } = config;
 const hash = 'seed';
 
 function random( seed ) {

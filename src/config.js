@@ -1,3 +1,41 @@
+const constants = {
+
+	CAMERA_SPEED: 0.02,
+	CAMERA_X: 0,
+	CAMERA_Y: 0.5,
+	CAMERA_Z: 10,
+	CAMERA_Z_PORTRAIT: 14,
+
+	FLOOR_SIZE: 110,
+	FLOOR_TEXTURE_URL: 'textures/polished_concrete_basecolor.jpg',
+	FLOOR_Y: - 1.35,
+
+	MAX_FPS: 60,
+
+	MIN_HUE: 0, 		MAX_HUE: Math.PI * 2,
+	MIN_PASSES: 1, 		MAX_PASSES: 4,
+	MIN_SATURATION: 0, 	MAX_SATURATION: 3,
+	MIN_SMOOTHNESS: 3, 	MAX_SMOOTHNESS: 30,
+	MIN_SPEED: 1, 		MAX_SPEED: 100,
+	MIN_ORB_VALUE: 0, 	MAX_ORB_VALUE: 1,
+
+	ORB_ROTATION_SPEED: 0.01,
+	ORB_SEGMENTS: 320,
+	ORB_Z_LANDSCAPE: 0,
+	ORB_Z_PORTRAIT: 2,
+
+	SAVE_BUTTON_LABEL: 'save (URL)',
+
+	TITLE: 'Orion',
+
+	VIGNETTE_TOP: 0.72,
+	VIGNETTE_BOTTOM: 1.2,
+	VIGNETTE_FALLOFF: 0.25,
+
+	DIGITS: 2,
+
+};
+
 const defaults = {
 
 	adjustments: {
@@ -52,6 +90,6 @@ const random = {
 
 };
 
-const config = { defaults, random };
+const config = { ...constants, defaults, random };
 
 export { config };

@@ -1,5 +1,6 @@
 import { Vector2, Vector3, Raycaster } from 'three';
 
+import { config } from './config';
 import { stage } from './stage';
 import { settings } from './settings';
 
@@ -60,15 +61,20 @@ const controls = {
 	},
 	resize: ( width, height ) => {
 
-		camera.position.set( 0, 0.5, 10 );
-		if ( width < height ) camera.position.z = 14;
+		const {
+			CAMERA_SPEED,
+			CAMERA_X, CAMERA_Y, CAMERA_Z, CAMERA_Z_PORTRAIT
+		} = config;
+
+		camera.position.set( CAMERA_X, CAMERA_Y, CAMERA_Z );
+		if ( width < height ) camera.position.z = CAMERA_Z_PORTRAIT;
 
 		controls.camera = {
 			lookAt: new Vector3( 0, 0, 0 ),
 			origin: new Vector3(),
 			target: new Vector3(),
 			targetXY: new Vector2( 5, 1 ),
-			lerpSpeed: 0.02,
+			lerpSpeed: CAMERA_SPEED,
 		};
 		controls.camera.origin.copy( camera.position );
 
@@ -76,8 +82,7 @@ const controls = {
 	get intersects() {
 
 		raycaster.setFromCamera( pointer, camera );
-		return raycaster.intersectObjects( scene.children, false )
-			.length;
+		return raycaster.intersectObjects( scene.children, false ).length;
 
 	},
 };

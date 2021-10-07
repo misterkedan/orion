@@ -3,11 +3,14 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 
 import { AdjustmentsPass } from './postprocessing/AdjustmentsPass';
-import { FXAAPass } from './postprocessing/FXAAPass';
 import { DitheredUnrealBloomPass } from './postprocessing/DitheredUnrealBloomPass';
+import { FXAAPass } from './postprocessing/FXAAPass';
 import { VerticalVignettePass } from './postprocessing/VerticalVignettePass';
 
+import { config } from './config';
 import { settings } from './settings';
+
+const { VIGNETTE_TOP, VIGNETTE_BOTTOM, VIGNETTE_FALLOFF } = config;
 
 let render;
 let composer;
@@ -29,7 +32,11 @@ function init( renderer, scene, camera ) {
 			bloom.radius,
 			bloom.threshold
 		),
-		vignette: new VerticalVignettePass( 0.72, 1.2, 0.25 ),
+		vignette: new VerticalVignettePass(
+			VIGNETTE_TOP,
+			VIGNETTE_BOTTOM,
+			VIGNETTE_FALLOFF
+		),
 		adjustments: new AdjustmentsPass( adjustments ),
 	};
 
