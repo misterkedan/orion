@@ -89,6 +89,23 @@ function applyDefaults() {
 
 }
 
+function initStorage() {
+
+	const { STORAGE_LAST, STORAGE_GUI, STORAGE_DURATION } = config;
+	const { localStorage } = window;
+
+	const now = Date.now();
+	const last = parseInt( localStorage.getItem( STORAGE_LAST ) ) || now;
+	const elapsed = now - last;
+	if ( elapsed > STORAGE_DURATION ) localStorage.clear();
+
+	const gui = window.localStorage.getItem( STORAGE_GUI );
+	settings.closeGUI = ( gui === 'false' ) ? false : true;
+
+	localStorage.setItem( STORAGE_LAST, now );
+
+}
+
 /*-----------------------------------------------------------------------------/
 
 	Public
@@ -176,8 +193,9 @@ function reset( hardReset = true ) {
 
 function init( orb ) {
 
-	window.addEventListener( 'hashchange', applyHash );
+	initStorage();
 	settings.orb = orb;
+	window.addEventListener( 'hashchange', applyHash );
 
 }
 

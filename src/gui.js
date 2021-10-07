@@ -5,6 +5,7 @@ import { render } from './render';
 import { settings } from './settings';
 
 const {
+	DIGITS,
 	MIN_HUE,
 	MAX_HUE,
 	MIN_ORB_VALUE,
@@ -18,7 +19,7 @@ const {
 	MIN_SPEED,
 	MAX_SPEED,
 	SAVE_BUTTON_LABEL,
-	DIGITS
+	STORAGE_GUI,
 } = config;
 
 const floatStep = 1 / Math.pow( 10, DIGITS );
@@ -58,7 +59,15 @@ gui.init = function () {
 	set.add( { [ SAVE_BUTTON_LABEL ]: settings.save }, SAVE_BUTTON_LABEL );
 	set.open();
 
-	gui.close();
+	if ( settings.closeGUI ) gui.close();
+
+	function onCloseButton() {
+
+		window.localStorage.setItem( STORAGE_GUI, gui.closed );
+
+	}
+
+	gui.__closeButton.addEventListener( 'click', onCloseButton );
 
 };
 
