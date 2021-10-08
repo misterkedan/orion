@@ -15,8 +15,7 @@ https://projects.thibautfoussard.com/plasma/
 
 Find Thibaut at:  
 https://www.thibautfoussard.com/  
-https://www.npmjs.com/~thibka  
-https://codepen.io/Thibka  
+https://www.npmjs.com/~thibka
 
 _
 
