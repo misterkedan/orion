@@ -4,7 +4,7 @@
  */
 
 import { Group, MathUtils, Mesh, PlaneGeometry, RepeatWrapping } from 'three';
-import { Reflector } from '../core/Reflector';
+import { Reflector } from '../misc/Reflector';
 import { ReflectorMaterial } from '../materials/ReflectorMaterial';
 
 class Floor extends Group {

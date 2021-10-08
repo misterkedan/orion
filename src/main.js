@@ -4,7 +4,7 @@ import winlo from 'winlo';
 
 import { Floor } from './scene/Floor';
 import { Orb } from './scene/Orb.js';
-import { Ticker } from './core/Ticker';
+import { Ticker } from './misc/Ticker';
 
 import { config } from './config';
 import { controls } from './controls';
