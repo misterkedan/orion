@@ -59,11 +59,15 @@ gui.init = function () {
 	set.add( { [ SAVE_BUTTON_LABEL ]: settings.save }, SAVE_BUTTON_LABEL );
 	set.open();
 
-	if ( settings.closeGUI ) gui.close();
+	if ( ! window.sessionStorage ) return;
+
+	const storageGUI = window.sessionStorage.getItem( STORAGE_GUI );
+	const closeGUI = ( storageGUI === 'false' ) ? false : true;
+	if ( closeGUI ) gui.close();
 
 	function onCloseButton() {
 
-		window.localStorage.setItem( STORAGE_GUI, gui.closed );
+		window.sessionStorage.setItem( STORAGE_GUI, gui.closed );
 
 	}
 

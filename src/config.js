@@ -25,11 +25,7 @@ const constants = {
 	ORB_Z_PORTRAIT: 2,
 
 	SAVE_BUTTON_LABEL: 'save (URL)',
-
-	STORAGE_LAST: 'last',
 	STORAGE_GUI: 'closeGUI',
-	STORAGE_DURATION: 60 * 60 * 1000, // 1 hour, in milliseconds
-
 	TITLE: 'Orion',
 
 	VIGNETTE_TOP: 0.72,

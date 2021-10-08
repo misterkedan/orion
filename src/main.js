@@ -94,6 +94,6 @@ function init( texture ) {
 
 	ticker.start();
 
-	setTimeout( gui.init, 0 ); // temp hack for weird dat.gui+winlo bug
+	setTimeout( gui.init, 0 ); // hack for weird dat.gui + winlo bug
 
 }
