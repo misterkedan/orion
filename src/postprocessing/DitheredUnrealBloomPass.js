@@ -5,7 +5,8 @@
 
 import { ShaderMaterial } from 'three';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
-import bayerMatrixDither from './glsl/bayerMatrixDither.glsl';
+
+import bayerMatrixDither from '../glsl/functions/bayerMatrixDither.glsl';
 
 /**
  * UnrealBloomPass is inspired by the bloom pass of Unreal Engine. It creates a

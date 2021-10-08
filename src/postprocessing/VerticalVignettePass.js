@@ -5,8 +5,9 @@
 
 import * as THREE from 'three';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
-import varyingUV from './glsl/vUv.vert.glsl';
-import bayerMatrixDither from './glsl/bayerMatrixDither.glsl';
+
+import varyingUV from '../glsl/vUv.vert.glsl';
+import bayerMatrixDither from '../glsl/functions/bayerMatrixDither.glsl';
 
 class VerticalVignettePass extends ShaderPass {
 

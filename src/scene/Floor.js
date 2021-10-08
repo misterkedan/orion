@@ -4,24 +4,25 @@
  */
 
 import { Group, MathUtils, Mesh, PlaneGeometry, RepeatWrapping } from 'three';
+
 import { Reflector } from '../misc/Reflector';
 import { ReflectorMaterial } from '../materials/ReflectorMaterial';
+import { stage } from '../stage';
 
 class Floor extends Group {
 
-	constructor( size ) {
+	constructor() {
 
 		super();
 
 		this.reflector = new Reflector();
-		this.size = size;
 
 	}
 
-	init( map, scene ) {
+	init( map ) {
 
-		const { size } = this;
-		const geometry = new PlaneGeometry( size, size );
+		const SIZE = 110;
+		const geometry = new PlaneGeometry( SIZE, SIZE );
 
 		if ( map ) {
 
@@ -31,7 +32,7 @@ class Floor extends Group {
 
 		}
 
-		const { fog } = scene;
+		const { fog } = stage.scene;
 
 		const material = new ReflectorMaterial( {
 			map,

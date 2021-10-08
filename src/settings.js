@@ -71,7 +71,7 @@ function write() {
 
 function applyHash() {
 
-	const { TITLE } = config;
+	const TITLE = 'Orion';
 	const { hash } = winlo;
 
 	document.title = ( hash ) ? `${TITLE} #${hash}` : TITLE;

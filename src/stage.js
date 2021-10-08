@@ -1,28 +1,14 @@
 import {
-	ACESFilmicToneMapping,
-	Color,
-	DirectionalLight,
-	Fog,
-	HemisphereLight,
-	PerspectiveCamera,
-	WebGLRenderer,
-	Scene
+	Color, DirectionalLight, Fog, HemisphereLight, PerspectiveCamera, Scene
 } from 'three';
 
-// Core setup
-
-const renderer = new WebGLRenderer( {
-	powerPreference: 'high-performance',
-	stencil: false,
-} );
-renderer.toneMapping = ACESFilmicToneMapping;
-
-const canvas = renderer.domElement;
-document.getElementById( 'main' ).appendChild( canvas );
+// Scene
 
 const scene = new Scene();
 scene.background = new Color( 0x222326 );
 scene.fog = new Fog( scene.background, 1, 50 );
+
+// Camera
 
 const camera = new PerspectiveCamera( 30 );
 camera.near = 0.5;
@@ -40,16 +26,13 @@ Object.values( lights ).forEach( light => scene.add( light ) );
 
 // Resize
 
-function resize( width, height, devicePixelRatio ) {
+function resize( width, height ) {
 
-	renderer.setPixelRatio( devicePixelRatio );
-
-	renderer.setSize( width, height );
 	camera.aspect = width / height;
 	camera.updateProjectionMatrix();
 
 }
 
-const stage = { renderer, canvas, scene, camera, lights, resize };
+const stage = { scene, camera, lights, resize };
 
 export { stage };

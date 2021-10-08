@@ -4,8 +4,8 @@
 
 import { Color, GLSL3, Matrix3, Matrix4, RawShaderMaterial, Uniform } from 'three';
 
-import vertexShader from '../shaders/ReflectorMaterial.vert.glsl';
-import fragmentShader from '../shaders/ReflectorMaterial.frag.glsl';
+import vertexShader from '../glsl/ReflectorMaterial.vert.glsl';
+import fragmentShader from '../glsl/ReflectorMaterial.frag.glsl';
 
 export class ReflectorMaterial extends RawShaderMaterial {
 

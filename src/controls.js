@@ -1,6 +1,6 @@
 import { Vector2, Vector3, Raycaster } from 'three';
 
-import { config } from './config';
+import { render } from './render';
 import { stage } from './stage';
 import { settings } from './settings';
 
@@ -51,7 +51,7 @@ const controls = {
 	update,
 	init: () => {
 
-		const { canvas } = stage;
+		const { canvas } = render;
 		canvas.addEventListener( 'pointerDown', onPointerMove );
 		canvas.addEventListener( 'pointermove', onPointerMove );
 		canvas.addEventListener( 'pointerup', onPointerUp );
@@ -61,20 +61,15 @@ const controls = {
 	},
 	resize: ( width, height ) => {
 
-		const {
-			CAMERA_SPEED,
-			CAMERA_X, CAMERA_Y, CAMERA_Z, CAMERA_Z_PORTRAIT
-		} = config;
-
-		camera.position.set( CAMERA_X, CAMERA_Y, CAMERA_Z );
-		if ( width < height ) camera.position.z = CAMERA_Z_PORTRAIT;
+		camera.position.set( 0, 0.5, 10 );
+		if ( width < height ) camera.position.z = 14;
 
 		controls.camera = {
 			lookAt: new Vector3( 0, 0, 0 ),
 			origin: new Vector3(),
 			target: new Vector3(),
 			targetXY: new Vector2( 5, 1 ),
-			lerpSpeed: CAMERA_SPEED,
+			lerpSpeed: 0.02,
 		};
 		controls.camera.origin.copy( camera.position );
 

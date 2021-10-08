@@ -2,20 +2,21 @@
  * @authors Thibaut Foussard, Pierre Keda
  */
 import { Mesh, ShaderMaterial, SphereGeometry } from 'three';
-import vertexShader from '../shaders/Orb.vert.glsl';
-import fragmentShader from '../shaders/Orb.frag.glsl';
+
+import vertexShader from '../glsl/Orb.vert.glsl';
+import fragmentShader from '../glsl/Orb.frag.glsl';
 import { settings } from '../settings';
-import { config } from '../config';
 
 class Orb extends Mesh {
 
-	constructor( segments ) {
+	constructor() {
 
 		const {
 			passes, smoothness, speed, value1, value2, rotationSpeed
 		} = settings.current.orb;
 
-		const geometry = new SphereGeometry( 1, segments, segments );
+		const SEGMENTS = 320;
+		const geometry = new SphereGeometry( 1, SEGMENTS, SEGMENTS );
 
 		const material = new ShaderMaterial( {
 			vertexShader,
@@ -38,14 +39,15 @@ class Orb extends Mesh {
 
 	update( time ) {
 
-		const { ORB_ROTATION_SPEED } = config;
 		const { rotation, rotationSpeed } = this;
+
+		const MULTIPLIER = 0.01;
 
 		time /= 1000;
 
-		rotation.x = time * rotationSpeed.x * ORB_ROTATION_SPEED;
-		rotation.y = time * rotationSpeed.y * ORB_ROTATION_SPEED;
-		rotation.z = time * rotationSpeed.z * ORB_ROTATION_SPEED;
+		rotation.x = time * rotationSpeed.x * MULTIPLIER;
+		rotation.y = time * rotationSpeed.y * MULTIPLIER;
+		rotation.z = time * rotationSpeed.z * MULTIPLIER;
 
 		this.time = time;
 

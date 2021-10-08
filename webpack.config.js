@@ -5,7 +5,7 @@ const TerserPlugin = require( 'terser-webpack-plugin' );
 let config = {
 	entry: './src/main.js',
 	output: {
-		filename: 'main.min.js',
+		filename: 'main.js',
 		path: path.resolve( __dirname, 'dist' ),
 	},
 	module: {

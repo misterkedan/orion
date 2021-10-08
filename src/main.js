@@ -1,47 +1,61 @@
 import { TextureLoader } from 'three';
-
 import winlo from 'winlo';
 
 import { Floor } from './scene/Floor';
 import { Orb } from './scene/Orb.js';
 import { Ticker } from './misc/Ticker';
 
-import { config } from './config';
 import { controls } from './controls';
 import { gui } from './gui';
 import { render } from './render';
 import { stage } from './stage';
 import { settings } from './settings';
 
-const {
-	FLOOR_SIZE,
-	FLOOR_TEXTURE_URL,
-	FLOOR_Y,
-	MAX_FPS,
-	ORB_Z_LANDSCAPE,
-	ORB_Z_PORTRAIT,
-	ORB_SEGMENTS,
-	DIGITS,
-} = config;
-
 // Load settings
 
 winlo.init();
-winlo.digits = DIGITS;
+winlo.digits = 2;
 settings.load();
 
-// Scene
+// Build scene
 
-const { renderer, scene, camera } = stage;
+const { scene } = stage;
 
-const floor = new Floor( FLOOR_SIZE );
-floor.position.y = FLOOR_Y;
+const floor = new Floor();
+floor.position.y =  - 1.35;
 scene.add( floor );
 
-const orb = new Orb( ORB_SEGMENTS );
+const orb = new Orb();
 scene.add( orb );
 
-// Resize
+// Load texture
+
+const loader = new TextureLoader();
+
+loader.load(
+	'textures/polished_concrete_basecolor.jpg', // URL
+	( texture ) => init( texture ), // onLoad
+	undefined,		// onProgress
+	() => init() 	// onError
+);
+
+// Callbacks
+
+function init( texture ) {
+
+	settings.init( orb );
+	floor.init( texture );
+	render.init();
+	controls.init();
+	setTimeout( gui.init, 0 ); // hack for weird dat.gui + winlo bug
+
+	window.addEventListener( 'resize', resize );
+	resize();
+
+	const ticker = new Ticker( animate, 60 );
+	ticker.start();
+
+}
 
 function resize() {
 
@@ -50,50 +64,16 @@ function resize() {
 	const width = innerWidth;
 	const height = innerHeight;
 
-	[ stage, render, floor, controls ].forEach( item =>
-		item.resize( width, height, devicePixelRatio )
-	);
+	const toResize = [ stage, render, floor, controls ];
+	toResize.forEach( item => item.resize( width, height, devicePixelRatio ) );
 
-	orb.position.z = ( width < height ) ? ORB_Z_PORTRAIT : ORB_Z_LANDSCAPE;
-
+	orb.position.z = ( width < height ) ? 2 : 0;
 
 }
-
-// Animate
 
 function animate( time ) {
 
-	controls.update();
-	orb.update( time );
-	render.update();
-
-}
-
-const ticker = new Ticker( animate, MAX_FPS );
-
-// Load floor texture, then init
-
-const loader = new TextureLoader();
-
-loader.load(
-	FLOOR_TEXTURE_URL, // URL
-	( texture ) => init( texture ), // onLoad
-	undefined,		// onProgress
-	() => init() 	// onError
-);
-
-function init( texture ) {
-
-	settings.init( orb );
-	floor.init( texture, scene );
-	render.init( renderer, scene, camera );
-	controls.init();
-
-	window.addEventListener( 'resize', resize );
-	resize();
-
-	ticker.start();
-
-	setTimeout( gui.init, 0 ); // hack for weird dat.gui + winlo bug
+	const toUpdate = [ controls, orb, render ];
+	toUpdate.forEach( item => item.update( time ) );
 
 }

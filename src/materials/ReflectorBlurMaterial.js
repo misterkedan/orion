@@ -4,8 +4,8 @@
 
 import { GLSL3, NoBlending, RawShaderMaterial, Uniform, Vector2 } from 'three';
 
-import vertexShader from '../shaders/ReflectorBlurPass.vert.glsl';
-import fragmentShader from '../shaders/ReflectorBlurPass.frag.glsl';
+import vertexShader from '../glsl/ReflectorBlurPass.vert.glsl';
+import fragmentShader from '../glsl/ReflectorBlurPass.frag.glsl';
 
 export class ReflectorBlurMaterial extends RawShaderMaterial {
 
