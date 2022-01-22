@@ -1,4 +1,5 @@
 import { Vector2, Vector3, Raycaster } from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 import { render } from './render';
 import { stage } from './stage';
@@ -23,15 +24,39 @@ function onPointerUp( event ) {
 
 }
 
-function onTouchStart( event ) {
+//function onTouchStart( event ) {
 
-	event.preventDefault();
+//	event.preventDefault();
+
+//}
+
+let hiddenUI = false;
+
+function onKeyboard( event ) {
+
+	const setVisibility = ( query, value ) => document.querySelector( query )
+		.style.visibility = value;
+
+	const toggle = () => {
+
+		hiddenUI = ! hiddenUI;
+		const value = hiddenUI ? 'hidden' : 'visible';
+		setVisibility( '.lil-gui', value );
+		setVisibility( '.footer', value );
+
+	};
+
+	const callbacks = {
+		' ': () => toggle()
+	};
+
+	const callback = callbacks[ event.key ];
+	if ( callback ) callback();
 
 }
 
 function update() {
 
-	const { intersects } = controls;
 	const { target, origin, targetXY, lookAt, lerpSpeed } = controls.camera;
 
 	target.x = origin.x + targetXY.x * pointer.x;
@@ -41,6 +66,7 @@ function update() {
 	camera.position.lerp( target, lerpSpeed );
 	camera.lookAt( lookAt );
 
+	const { intersects } = controls;
 	style.cursor = ( intersects ) ? 'pointer' : 'auto';
 
 }
@@ -52,11 +78,14 @@ const controls = {
 	init: () => {
 
 		const { canvas } = render;
-		canvas.addEventListener( 'pointerDown', onPointerMove );
+
+		//canvas.addEventListener( 'pointerdown', onPointerMove );
 		canvas.addEventListener( 'pointermove', onPointerMove );
 		canvas.addEventListener( 'pointerup', onPointerUp );
-		canvas.addEventListener( 'touchstart', onTouchStart );
+		//canvas.addEventListener( 'touchstart', onTouchStart );
 
+		//const orbit = new OrbitControls( camera, canvas );
+		//window.addEventListener( 'keyup', onKeyboard );
 
 	},
 	resize: ( width, height ) => {

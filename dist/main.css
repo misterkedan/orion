@@ -1,5 +1,5 @@
 body {
-	font-family: sans-serif;
+	font-family: monospace;
     background: #000;
     color: #fff;
 	-webkit-font-smoothing: antialiased;
@@ -19,7 +19,8 @@ body, canvas {
 	bottom: 0;
 	right: 0;
 	margin: 1rem;
-	color: rgba( 255, 255, 255, 0.5 );
+	color: rgba( 255, 255, 255, 0.3 );
+	user-select: none;
 }
 
 .footer a {

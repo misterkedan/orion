@@ -1,33 +1,32 @@
 {
   "name": "orion",
-  "version": "1.0.0",
+  "version": "1.1.0-beta",
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack serve --mode development"
   },
-  "keywords": [],
   "author": "Pierre Keda",
   "license": "ISC",
+  "dependencies": {
+    "lil-gui": "^0.16.0",
+    "three": "^0.136.0",
+    "vesuna": "^1.0.0",
+    "winlo": "^0.8.0"
+  },
   "devDependencies": {
-    "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.6",
-    "babel-loader": "^8.2.2",
-    "eslint": "^7.32.0",
+    "@babel/core": "^7.16.10",
+    "@babel/preset-env": "^7.16.11",
+    "babel-loader": "^8.2.3",
+    "eslint": "^8.7.0",
     "eslint-config-mdcs": "^5.0.0",
     "lodash": "^4.17.21",
     "raw-loader": "^4.0.2",
-    "terser-webpack-plugin": "^5.2.4",
-    "webpack": "^5.54.0",
-    "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.3.0"
-  },
-  "dependencies": {
-    "dat.gui": "^0.7.7",
-    "three": "^0.132.2",
-    "vesuna": "^1.0.0",
-    "winlo": "^0.8.0"
+    "terser-webpack-plugin": "^5.3.0",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.7.3"
   },
   "private": true
 }

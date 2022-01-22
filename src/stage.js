@@ -11,6 +11,7 @@ scene.fog = new Fog( scene.background, 1, 50 );
 // Camera
 
 const camera = new PerspectiveCamera( 30 );
+camera.position.set( 0, 0, 8.5 );
 camera.near = 0.5;
 camera.far = 50;
 

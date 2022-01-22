@@ -1,10 +1,10 @@
-import * as dat from 'dat.gui';
+import { GUI } from 'lil-gui';
 import winlo from 'winlo';
 
 import { render } from './render';
 import { settings } from './settings';
 
-const gui = new dat.GUI();
+const gui = new GUI();
 
 gui.init = function () {
 
@@ -38,6 +38,10 @@ gui.init = function () {
 	set.add( { [ SAVE_BUTTON_LABEL ]: settings.save }, SAVE_BUTTON_LABEL );
 	set.open();
 
+	gui.updateDisplay = () => gui.controllersRecursive().forEach(
+		controller => controller.updateDisplay()
+	);
+
 	if ( ! window.sessionStorage ) return;
 
 	const STORAGE_GUI = 'closeGUI';
@@ -51,7 +55,7 @@ gui.init = function () {
 
 	}
 
-	gui.__closeButton.addEventListener( 'click', onCloseButton );
+	gui.domElement.addEventListener( 'click', onCloseButton );
 
 };
 

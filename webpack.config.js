@@ -25,7 +25,8 @@ let config = {
 		]
 	},
 	externals: {
-		'dat.gui': 'dat.gui',
+		'stats.js': 'Stats',
+		'lil-gui': 'GUI',
 		three: 'THREE'
 	},
 };
