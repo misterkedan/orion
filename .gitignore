@@ -1,4 +1,5 @@
-node_modules/*
-_/*
 .DS_Store
 Thumbs.db
+node_modules/*
+_/*
+*.code-workspace

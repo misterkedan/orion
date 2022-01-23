@@ -99,9 +99,10 @@ void main() {
     float v1 = cnoise(pos + time);
     float v2 = cnoise(pos + time - loopLength);
 
-	for ( int i = 0; i < uPasses; i ++ ) {
+	for ( int i = 0; i < 4; i ++ ) {
 		v1 = cnoise( vec3(v1) );
 		v2 = cnoise( vec3(v2) );
+		if ( i + 2 > uPasses ) break; // Const index hack for old GL versions
 	}
 
     float transitionProgress = (time-transitionStart)/(loopLength-transitionStart);

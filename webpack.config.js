@@ -11,22 +11,24 @@ let config = {
 	module: {
 		rules: [
 			{
-				test: /\.js$/,
-				exclude: [ /node_modules/ ],
-				loader: 'babel-loader',
-				options: { presets: [ '@babel/preset-env' ] }
+				test: /\.m?js$/,
+				exclude: /node_modules\/(?!(textformer|vesuna))/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: [ '@babel/preset-env' ],
+					},
+				},
 			}, {
 				test: /\.(glsl)$/,
-				exclude: /(node_modules)/,
-				use: [
-					'raw-loader'
-				]
-			}
+				exclude: /node_modules/,
+				loader: 'raw-loader',
+			},
 		]
 	},
 	externals: {
-		'stats.js': 'Stats',
-		'lil-gui': 'GUI',
+		'stats.js': 'window',
+		'lil-gui': 'window',
 		three: 'THREE'
 	},
 };
