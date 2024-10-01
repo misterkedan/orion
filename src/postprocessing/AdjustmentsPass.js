@@ -1,5 +1,5 @@
 /**
- * @author Pierre Keda
+ * @author Kedan
  * Simple image adjustments pass.
  * Based on https://threejs.org/examples/?q=post#webgl_postprocessing_nodes
  */

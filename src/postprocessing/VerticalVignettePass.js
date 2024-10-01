@@ -1,5 +1,5 @@
 /**
- * @author Pierre Keda
+ * @author Kedan
  * Based on https://github.com/spite/Wagner/blob/master/fragment-shaders/vignette-fs.glsl
  */
 
@@ -10,45 +10,40 @@ import varyingUV from '../glsl/vUv.vert.glsl';
 import bayerMatrixDither from '../glsl/functions/bayerMatrixDither.glsl';
 
 class VerticalVignettePass extends ShaderPass {
+  /**
+   * Vertical only vignette pass.
+   * @param { Number } top 		Vignette strength at the top
+   * @param { Number } bottom 	Vignette strength at the bottom
+   * @param { Number } falloff	Smooth gradient around 0, sharp around 1
+   */
+  constructor(top = 1, bottom = 1, falloff = 0.5) {
+    super(new THREE.ShaderMaterial(VerticalVignettePass.shader));
 
-	/**
-	 * Vertical only vignette pass.
-	 * @param { Number } top 		Vignette strength at the top
-	 * @param { Number } bottom 	Vignette strength at the bottom
-	 * @param { Number } falloff	Smooth gradient around 0, sharp around 1
-	 */
-	constructor( top = 1, bottom = 1, falloff = 0.5 ) {
-
-		super( new THREE.ShaderMaterial( VerticalVignettePass.shader ) );
-
-		const { uniforms } = this.material;
-		uniforms.uTop.value = top;
-		uniforms.uBottom.value = bottom;
-		uniforms.uFalloff.value = falloff;
-
-	}
-
+    const { uniforms } = this.material;
+    uniforms.uTop.value = top;
+    uniforms.uBottom.value = bottom;
+    uniforms.uFalloff.value = falloff;
+  }
 }
 
 VerticalVignettePass.shader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    uTop: { value: 0 },
+    uBottom: { value: 0 },
+    uFalloff: { value: 0 },
+  },
 
-	uniforms: {
-		tDiffuse: 	{ value: null },
-		uTop: 		{ value: 0 },
-		uBottom: 	{ value: 0 },
-		uFalloff: 	{ value: 0 },
-	},
+  vertexShader: varyingUV,
 
-	vertexShader: varyingUV,
-
-	fragmentShader: /*glsl*/`
+  fragmentShader: /*glsl*/ `
 		uniform sampler2D tDiffuse;
 		uniform float uTop;
 		uniform float uBottom;
 		uniform float uFalloff;
 		varying vec2 vUv;
 
-		${ bayerMatrixDither }
+		${bayerMatrixDither}
 
 		void main() {
 
@@ -67,7 +62,6 @@ VerticalVignettePass.shader = {
 
 		}
 	`,
-
 };
 
 export { VerticalVignettePass };

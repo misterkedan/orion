@@ -1,8 +1,8 @@
 {
   "name": "orion",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Collaborative three.js experiment.",
-  "author": "Pierre Keda",
+  "author": "Thibka & Kedan",
   "license": "ISC",
   "dependencies": {
     "lil-gui": "^0.16.0",

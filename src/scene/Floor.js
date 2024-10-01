@@ -1,6 +1,6 @@
 /**
  * @author pschroen / https://ufo.ai/
- * Edit by Pierre Keda
+ * Edit by Kedan
  */
 
 import { Group, MathUtils, Mesh, PlaneGeometry, RepeatWrapping } from 'three';
@@ -10,67 +10,55 @@ import { ReflectorMaterial } from '../materials/ReflectorMaterial';
 import { stage } from '../stage';
 
 class Floor extends Group {
+  constructor() {
+    super();
 
-	constructor() {
+    this.reflector = new Reflector();
+  }
 
-		super();
+  init(map) {
+    const SIZE = 110;
+    const geometry = new PlaneGeometry(SIZE, SIZE);
 
-		this.reflector = new Reflector();
+    if (map) {
+      map.wrapS = RepeatWrapping;
+      map.wrapT = RepeatWrapping;
+      map.repeat.set(16, 16);
+    }
 
-	}
+    const { fog } = stage.scene;
 
-	init( map ) {
+    const material = new ReflectorMaterial({
+      map,
+      fog,
+      dithering: true,
+    });
 
-		const SIZE = 110;
-		const geometry = new PlaneGeometry( SIZE, SIZE );
+    material.uniforms.tReflect = this.reflector.renderTargetUniform;
+    material.uniforms.uMatrix = this.reflector.textureMatrixUniform;
 
-		if ( map ) {
+    const mesh = new Mesh(geometry, material);
+    mesh.rotation.x = -Math.PI / 2;
+    mesh.add(this.reflector);
 
-			map.wrapS = RepeatWrapping;
-			map.wrapT = RepeatWrapping;
-			map.repeat.set( 16, 16 );
+    mesh.onBeforeRender = (renderer, scene, camera) => {
+      this.visible = false;
+      this.reflector.update(renderer, scene, camera);
+      this.visible = true;
+    };
 
-		}
+    this.add(mesh);
+  }
 
-		const { fog } = stage.scene;
+  resize(width, height, devicePixelRatio) {
+    width = Math.round(width / devicePixelRatio);
+    height = Math.round(height / devicePixelRatio);
 
-		const material = new ReflectorMaterial( {
-			map,
-			fog,
-			dithering: true
-		} );
+    width = MathUtils.floorPowerOfTwo(width) / 2;
+    height = 1024;
 
-		material.uniforms.tReflect = this.reflector.renderTargetUniform;
-		material.uniforms.uMatrix = this.reflector.textureMatrixUniform;
-
-		const mesh = new Mesh( geometry, material );
-		mesh.rotation.x = - Math.PI / 2;
-		mesh.add( this.reflector );
-
-		mesh.onBeforeRender = ( renderer, scene, camera ) => {
-
-			this.visible = false;
-			this.reflector.update( renderer, scene, camera );
-			this.visible = true;
-
-		};
-
-		this.add( mesh );
-
-	}
-
-	resize( width, height, devicePixelRatio ) {
-
-		width = Math.round( width / devicePixelRatio );
-		height = Math.round( height / devicePixelRatio );
-
-		width = MathUtils.floorPowerOfTwo( width ) / 2;
-		height = 1024;
-
-		this.reflector.setSize( width, height );
-
-	}
-
+    this.reflector.setSize(width, height);
+  }
 }
 
 export { Floor };
